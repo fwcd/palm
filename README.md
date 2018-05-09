@@ -1,2 +1,2 @@
 # Palm
-A pure-Java code editor for Swing featuring syntax highlighting, indentation and more.
+A pure-Java code editing component for Swing featuring syntax highlighting, indentation and more.
