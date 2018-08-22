@@ -11,11 +11,11 @@ import javax.swing.ScrollPaneLayout;
 
 import com.fwcd.palm.theme.Theme;
 
-public class BScrollPane extends JScrollPane {
+public class PalmScrollPane extends JScrollPane {
 	private static final long serialVersionUID = 9879879438759345L;
 	private final int scrollBarThickness = 5;
 
-	public BScrollPane(JComponent component, Theme theme) {
+	public PalmScrollPane(JComponent component, Theme theme) {
 		super(component, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_ALWAYS);
 
 		setOpaque(false);
@@ -23,12 +23,12 @@ public class BScrollPane extends JScrollPane {
 
 		JScrollBar vbar = getVerticalScrollBar();
 		vbar.setOpaque(false);
-		vbar.setUI(new BreezeScrollBar(theme));
+		vbar.setUI(new PalmScrollBar(theme));
 		vbar.setUnitIncrement(15);
 
 		JScrollBar hbar = getHorizontalScrollBar();
 		hbar.setOpaque(false);
-		hbar.setUI(new BreezeScrollBar(theme));
+		hbar.setUI(new PalmScrollBar(theme));
 		hbar.setUnitIncrement(10);
 
 		setBorder(null);
@@ -37,7 +37,7 @@ public class BScrollPane extends JScrollPane {
 
 			@Override
 			public void layoutContainer(Container parent) {
-				JScrollPane scrollPane = BScrollPane.this;
+				JScrollPane scrollPane = PalmScrollPane.this;
 
 				Rectangle availR = scrollPane.getBounds();
 				availR.x = availR.y = 0;

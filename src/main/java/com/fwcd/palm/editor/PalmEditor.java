@@ -32,13 +32,13 @@ import com.fwcd.palm.model.CodeDoc;
 import com.fwcd.palm.theme.Theme;
 import com.fwcd.palm.theme.ThemedElement;
 import com.fwcd.palm.utils.PalmException;
-import com.fwcd.palm.viewutils.BScrollPane;
+import com.fwcd.palm.viewutils.PalmScrollPane;
 import com.fwcd.palm.viewutils.DocumentAdapter;
 
 public class PalmEditor {
 	private final PalmConfigured parent;
 	private final JPanel view;
-	private final BScrollPane scrollPane;
+	private final PalmScrollPane scrollPane;
 	private final CodePane codePane;
 	private final List<EditorTypingModule> typingModules = new ArrayList<>();
 	private final EditorConfig config = new EditorConfig();
@@ -52,7 +52,7 @@ public class PalmEditor {
 		codePane = new CodePane(this);
 		codePane.setTheme(theme);
 
-		scrollPane = new BScrollPane(codePane.getView(), theme);
+		scrollPane = new PalmScrollPane(codePane.getView(), theme);
 
 		view = new JPanel();
 		view.setLayout(new BorderLayout());

@@ -11,10 +11,10 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import com.fwcd.palm.theme.Theme;
 
-public class BreezeScrollBar extends BasicScrollBarUI {
+public class PalmScrollBar extends BasicScrollBarUI {
 	private final Color color;
 
-	public BreezeScrollBar(Theme theme) {
+	public PalmScrollBar(Theme theme) {
 		color = theme.mildFGColor();
 	}
 
