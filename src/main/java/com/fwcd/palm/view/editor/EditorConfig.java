@@ -1,4 +1,4 @@
-package com.fwcd.palm.editor;
+package com.fwcd.palm.view.editor;
 
 import java.awt.Font;
 

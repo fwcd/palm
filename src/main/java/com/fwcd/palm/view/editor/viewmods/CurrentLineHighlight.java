@@ -1,12 +1,12 @@
-package com.fwcd.palm.editor.viewmods;
+package com.fwcd.palm.view.editor.viewmods;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
-import com.fwcd.palm.editor.PalmEditor;
-import com.fwcd.palm.theme.ThemedElement;
+import com.fwcd.palm.view.editor.PalmEditor;
+import com.fwcd.palm.view.theme.ThemedElement;
 
 public class CurrentLineHighlight implements EditorViewModule {
 	@Override
@@ -20,7 +20,7 @@ public class CurrentLineHighlight implements EditorViewModule {
 		int x = 0;
 		int y = caretLine * metrics.getHeight();
 
-		g2d.setColor(editor.getTheme().colorOf(ThemedElement.LINE_HIGHLIGHT).orElse(getColor(editor.getBGColor())));
+		g2d.setColor(editor.getTheme().get().colorOf(ThemedElement.LINE_HIGHLIGHT).orElse(getColor(editor.getBGColor())));
 		g2d.fillRect(x, y, width, height);
 
 	}

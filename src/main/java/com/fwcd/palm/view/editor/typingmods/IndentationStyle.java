@@ -1,4 +1,4 @@
-package com.fwcd.palm.editor.typingmods;
+package com.fwcd.palm.view.editor.typingmods;
 
 public enum IndentationStyle {
 	TABS("\t"),

@@ -1,4 +1,4 @@
-package com.fwcd.palm.viewutils;
+package com.fwcd.palm.view.utils;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,13 +9,16 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import com.fwcd.palm.theme.Theme;
+import com.fwcd.fructose.Observable;
+import com.fwcd.palm.view.theme.Theme;
 
 public class PalmScrollBar extends BasicScrollBarUI {
-	private final Color color;
+	private Color color = Color.LIGHT_GRAY;
 
-	public PalmScrollBar(Theme theme) {
-		color = theme.mildFGColor();
+	public PalmScrollBar(Observable<Theme> theme) {
+		theme.listenAndFire(it -> {
+			color = it.mildFGColor();
+		});
 	}
 
 	@Override

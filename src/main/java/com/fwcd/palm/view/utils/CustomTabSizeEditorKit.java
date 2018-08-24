@@ -1,4 +1,4 @@
-package com.fwcd.palm.viewutils;
+package com.fwcd.palm.view.utils;
 
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BoxView;

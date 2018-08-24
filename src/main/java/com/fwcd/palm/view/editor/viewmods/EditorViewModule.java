@@ -1,9 +1,9 @@
-package com.fwcd.palm.editor.viewmods;
+package com.fwcd.palm.view.editor.viewmods;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
-import com.fwcd.palm.editor.PalmEditor;
+import com.fwcd.palm.view.editor.PalmEditor;
 
 public interface EditorViewModule {
 	// TODO: Stuff like line highlights and syntax highlighters belong here

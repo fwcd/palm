@@ -1,4 +1,4 @@
-package com.fwcd.palm.theme;
+package com.fwcd.palm.view.theme;
 
 public enum ThemedElement {
 	EDITOR_BG,

@@ -1,15 +1,14 @@
-package com.fwcd.palm.editor.viewmods;
+package com.fwcd.palm.view.editor.viewmods;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fwcd.palm.editor.PalmEditor;
-import com.fwcd.palm.languages.ProgrammingLang;
-import com.fwcd.palm.theme.Theme;
-import com.fwcd.palm.theme.ThemedElement;
-import com.fwcd.palm.viewutils.TextStyle;
+import com.fwcd.palm.model.languages.Language;
+import com.fwcd.palm.view.editor.PalmEditor;
+import com.fwcd.palm.view.theme.ThemedElement;
+import com.fwcd.palm.view.utils.TextStyle;
 
 public class SyntaxHighlighter implements EditorViewModule {
 	private final Map<Pattern, TextStyle> syntax = new HashMap<>();
@@ -18,7 +17,7 @@ public class SyntaxHighlighter implements EditorViewModule {
 
 	}
 
-	public SyntaxHighlighter(PalmEditor editor, ProgrammingLang language) {
+	public SyntaxHighlighter(PalmEditor editor, Language language) {
 		StringBuilder keywordRegexBuilder = new StringBuilder();
 
 		for (String keyword : language.getKeywords()) {
@@ -26,8 +25,10 @@ public class SyntaxHighlighter implements EditorViewModule {
 		}
 
 		String keywordRegex = keywordRegexBuilder.substring(0, keywordRegexBuilder.length() - 1);
-		Theme theme = editor.getTheme();
-		syntax.put(Pattern.compile(keywordRegex), new TextStyle(true, theme.colorOf(ThemedElement.SYNTAX_KEYWORD).orElse(theme.fgColor())));
+		Pattern pattern = Pattern.compile(keywordRegex);
+		editor.getTheme().listenAndFire(theme -> {
+			syntax.put(pattern, new TextStyle(true, theme.colorOf(ThemedElement.SYNTAX_KEYWORD).orElse(theme.fgColor())));
+		});
 	}
 
 	@Override

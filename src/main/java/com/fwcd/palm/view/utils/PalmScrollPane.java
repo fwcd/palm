@@ -1,4 +1,4 @@
-package com.fwcd.palm.viewutils;
+package com.fwcd.palm.view.utils;
 
 import java.awt.Container;
 import java.awt.Insets;
@@ -9,13 +9,14 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneLayout;
 
-import com.fwcd.palm.theme.Theme;
+import com.fwcd.fructose.Observable;
+import com.fwcd.palm.view.theme.Theme;
 
 public class PalmScrollPane extends JScrollPane {
 	private static final long serialVersionUID = 9879879438759345L;
 	private final int scrollBarThickness = 5;
 
-	public PalmScrollPane(JComponent component, Theme theme) {
+	public PalmScrollPane(JComponent component, Observable<Theme> theme) {
 		super(component, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_ALWAYS);
 
 		setOpaque(false);

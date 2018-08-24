@@ -1,4 +1,4 @@
-package com.fwcd.palm.editor;
+package com.fwcd.palm.view.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,33 +22,33 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
-import com.fwcd.palm.config.PalmConfigured;
-import com.fwcd.palm.editor.typingmods.EditorTypingModule;
-import com.fwcd.palm.editor.typingmods.Indentation;
-import com.fwcd.palm.editor.viewmods.CurrentLineHighlight;
-import com.fwcd.palm.editor.viewmods.EditorViewModule;
-import com.fwcd.palm.editor.viewmods.SyntaxHighlighter;
-import com.fwcd.palm.model.CodeDoc;
-import com.fwcd.palm.theme.Theme;
-import com.fwcd.palm.theme.ThemedElement;
+import com.fwcd.fructose.Observable;
+import com.fwcd.fructose.swing.Viewable;
+import com.fwcd.palm.model.PalmDocument;
+import com.fwcd.palm.model.PalmEditorModel;
 import com.fwcd.palm.utils.PalmException;
-import com.fwcd.palm.viewutils.PalmScrollPane;
-import com.fwcd.palm.viewutils.DocumentAdapter;
+import com.fwcd.palm.view.editor.typingmods.EditorTypingModule;
+import com.fwcd.palm.view.editor.typingmods.Indentation;
+import com.fwcd.palm.view.editor.viewmods.CurrentLineHighlight;
+import com.fwcd.palm.view.editor.viewmods.EditorViewModule;
+import com.fwcd.palm.view.editor.viewmods.SyntaxHighlighter;
+import com.fwcd.palm.view.theme.LightTheme;
+import com.fwcd.palm.view.theme.Theme;
+import com.fwcd.palm.view.theme.ThemedElement;
+import com.fwcd.palm.view.utils.DocumentAdapter;
+import com.fwcd.palm.view.utils.PalmScrollPane;
 
-public class PalmEditor {
-	private final PalmConfigured parent;
+public class PalmEditor implements Viewable {
+	private final Observable<Theme> theme = new Observable<>(new LightTheme());
 	private final JPanel view;
 	private final PalmScrollPane scrollPane;
 	private final CodePane codePane;
 	private final List<EditorTypingModule> typingModules = new ArrayList<>();
 	private final EditorConfig config = new EditorConfig();
 
-	private CodeDoc model;
+	private PalmEditorModel model;
 
-	public PalmEditor(PalmConfigured parent) {
-		this.parent = parent;
-		Theme theme = parent.getTheme();
-
+	public PalmEditor() {
 		codePane = new CodePane(this);
 		codePane.setTheme(theme);
 
@@ -56,14 +56,22 @@ public class PalmEditor {
 
 		view = new JPanel();
 		view.setLayout(new BorderLayout());
-		view.setBackground(theme.colorOf(ThemedElement.EDITOR_BG).orElse(theme.bgColor()));
+		theme.listenAndFire(it -> {
+			view.setBackground(it.colorOf(ThemedElement.EDITOR_BG).orElse(it.bgColor()));
+		});
+		
 		view.add(scrollPane, BorderLayout.CENTER);
 
-		setModel(new CodeDoc());
+		setModel(new PalmDocument());
 
 		typingModules().add(new Indentation());
 //		typingModules().add(new SymbolCloser()); FIXME: Too buggy to use productively yet, unfortunately
-		viewModules().add(new SyntaxHighlighter(this, parent.getLanguage()));
+		model.getLanguage().listenAndFire(language -> {
+			language.ifPresent(lang -> {
+				// FIXME: Remove old syntax highlighter
+				viewModules().add(new SyntaxHighlighter(this, lang));
+			});
+		});
 		viewModules().add(new CurrentLineHighlight());
 
 		update();
@@ -73,7 +81,7 @@ public class PalmEditor {
 		codePane.addKeybind(bind, onPress);
 	}
 
-	private void setModel(CodeDoc model) {
+	private void setModel(PalmEditorModel model) {
 		this.model = model;
 		codePane.setModel(model);
 		model.addDocumentListener(new DocumentAdapter() {
@@ -128,7 +136,7 @@ public class PalmEditor {
 
 	public void open(InputStream stream) {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
-			setModel(new CodeDoc());
+			setModel(new PalmDocument());
 			String line;
 			while ((line = reader.readLine()) != null) {
 				model.appendLine(line);
@@ -224,7 +232,8 @@ public class PalmEditor {
 	public CodePane getCodePane() {
 		return codePane;
 	}
-
+	
+	@Override
 	public JComponent getView() {
 		return view;
 	}
@@ -256,8 +265,8 @@ public class PalmEditor {
 	public FontMetrics getFontMetrics() {
 		return codePane.getFG().getGraphics().getFontMetrics();
 	}
-
-	public Theme getTheme() {
-		return parent.getTheme();
+	
+	public Observable<Theme> getTheme() {
+		return theme;
 	}
 }

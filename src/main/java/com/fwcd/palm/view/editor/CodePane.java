@@ -1,4 +1,4 @@
-package com.fwcd.palm.editor;
+package com.fwcd.palm.view.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -21,12 +21,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.text.EditorKit;
 import javax.swing.text.PlainDocument;
 
-import com.fwcd.palm.editor.viewmods.EditorViewModule;
-import com.fwcd.palm.model.CodeDoc;
-import com.fwcd.palm.theme.Theme;
-import com.fwcd.palm.viewutils.CustomTabSizeEditorKit;
-import com.fwcd.palm.viewutils.DocumentAdapter;
-import com.fwcd.palm.viewutils.TextStyle;
+import com.fwcd.fructose.Observable;
+import com.fwcd.palm.model.PalmDocument;
+import com.fwcd.palm.view.editor.viewmods.EditorViewModule;
+import com.fwcd.palm.view.theme.Theme;
+import com.fwcd.palm.view.utils.CustomTabSizeEditorKit;
+import com.fwcd.palm.view.utils.DocumentAdapter;
+import com.fwcd.palm.view.utils.TextStyle;
 
 public class CodePane {
 	private final JPanel view;
@@ -36,11 +37,11 @@ public class CodePane {
 	private final List<EditorViewModule> modules = new ArrayList<>();
 	private final PalmEditor parent;
 
-	private CodeDoc doc;
+	private PalmDocument doc;
 
 	public CodePane(PalmEditor parent) {
 		this.parent = parent;
-		defaultStyle = new TextStyle(parent.getTheme().fgColor());
+		defaultStyle = new TextStyle(parent.getTheme().get().fgColor());
 
 		view = new JPanel() {
 			private static final long serialVersionUID = 1L;
@@ -80,7 +81,7 @@ public class CodePane {
 
 		});
 
-		setModel(new CodeDoc());
+		setModel(new PalmDocument());
 
 		view.add(foreground, BorderLayout.CENTER);
 		defaultStyle.addAttribute(PlainDocument.tabSizeAttribute, 4);
@@ -119,16 +120,17 @@ public class CodePane {
 		return view;
 	}
 
-	public void setTheme(Theme theme) {
-		foreground.setForeground(theme.fgColor());
-		foreground.setCaretColor(theme.fgColor());
+	public void setTheme(Observable<Theme> theme) {
+		theme.listenAndFire(it -> {
+			foreground.setForeground(it.fgColor());
+			foreground.setCaretColor(it.fgColor());
+		});
 	}
 
-	public void setModel(CodeDoc doc) {
+	public void setModel(PalmDocument doc) {
 		this.doc = doc;
 		foreground.setDocument(doc);
 		doc.addDocumentListener(new DocumentAdapter() {
-
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				if (!doc.isSilent()) {
@@ -142,12 +144,11 @@ public class CodePane {
 					update();
 				}
 			}
-
 		});
 		foreground.setDocument(doc);
 	}
 
-	public CodeDoc getModel() {
+	public PalmDocument getModel() {
 		return doc;
 	}
 

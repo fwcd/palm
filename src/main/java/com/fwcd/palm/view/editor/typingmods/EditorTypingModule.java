@@ -1,6 +1,6 @@
-package com.fwcd.palm.editor.typingmods;
+package com.fwcd.palm.view.editor.typingmods;
 
-import com.fwcd.palm.editor.PalmEditor;
+import com.fwcd.palm.view.editor.PalmEditor;
 
 public interface EditorTypingModule {
 	/**

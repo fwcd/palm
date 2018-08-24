@@ -1,9 +1,9 @@
-package com.fwcd.palm.editor.typingmods;
+package com.fwcd.palm.view.editor.typingmods;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fwcd.palm.editor.PalmEditor;
+import com.fwcd.palm.view.editor.PalmEditor;
 
 public class Indentation implements EditorTypingModule {
 	private final Map<String, String> indentors = new HashMap<>();

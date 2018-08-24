@@ -1,4 +1,4 @@
-package com.fwcd.palm.theme;
+package com.fwcd.palm.view.theme;
 
 import java.awt.Color;
 import java.util.Optional;

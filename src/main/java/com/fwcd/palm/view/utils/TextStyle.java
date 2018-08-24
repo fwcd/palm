@@ -1,4 +1,4 @@
-package com.fwcd.palm.viewutils;
+package com.fwcd.palm.view.utils;
 
 import java.awt.Color;
 import java.util.Enumeration;
