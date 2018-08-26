@@ -22,6 +22,7 @@ import javax.swing.text.EditorKit;
 import javax.swing.text.PlainDocument;
 
 import com.fwcd.fructose.Observable;
+import com.fwcd.fructose.swing.View;
 import com.fwcd.palm.model.PalmDocument;
 import com.fwcd.palm.view.editor.viewmods.EditorViewModule;
 import com.fwcd.palm.view.theme.Theme;
@@ -29,21 +30,21 @@ import com.fwcd.palm.view.utils.CustomTabSizeEditorKit;
 import com.fwcd.palm.view.utils.DocumentAdapter;
 import com.fwcd.palm.view.utils.TextStyle;
 
-public class CodePane {
-	private final JPanel view;
+public class TextBufferView implements View {
+	private final JPanel component;
 	private final JTextPane foreground;
 
 	private final TextStyle defaultStyle;
 	private final List<EditorViewModule> modules = new ArrayList<>();
-	private final PalmEditor parent;
+	private final PalmEditorView parent;
 
 	private PalmDocument doc;
 
-	public CodePane(PalmEditor parent) {
+	public TextBufferView(PalmEditorView parent) {
 		this.parent = parent;
 		defaultStyle = new TextStyle(parent.getTheme().get().fgColor());
 
-		view = new JPanel() {
+		component = new JPanel() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -51,8 +52,8 @@ public class CodePane {
 				renderBG((Graphics2D) g, getSize());
 			}
 		};
-		view.setOpaque(false);
-		view.setLayout(new BorderLayout());
+		component.setOpaque(false);
+		component.setLayout(new BorderLayout());
 
 		foreground = new JTextPane() {
 			private static final long serialVersionUID = 1L;
@@ -63,7 +64,7 @@ public class CodePane {
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				super.paintComponent(g2d);
 				renderFG(g2d);
-				view.repaint();
+				component.repaint();
 			}
 
 			@Override
@@ -73,17 +74,15 @@ public class CodePane {
 		};
 		foreground.setOpaque(false);
 		foreground.addCaretListener(new CaretListener() {
-
 			@Override
 			public void caretUpdate(CaretEvent e) {
-				view.repaint();
+				component.repaint();
 			}
-
 		});
 
 		setModel(new PalmDocument());
 
-		view.add(foreground, BorderLayout.CENTER);
+		component.add(foreground, BorderLayout.CENTER);
 		defaultStyle.addAttribute(PlainDocument.tabSizeAttribute, 4);
 	}
 
@@ -117,7 +116,7 @@ public class CodePane {
 	}
 
 	public JComponent getComponent() {
-		return view;
+		return component;
 	}
 
 	public void setTheme(Observable<Theme> theme) {
@@ -132,14 +131,12 @@ public class CodePane {
 		foreground.setDocument(doc);
 		doc.addDocumentListener(new DocumentAdapter() {
 			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if (!doc.isSilent()) {
-					update();
-				}
-			}
+			public void insertUpdate(DocumentEvent e) { fireUpdate(); }
 
 			@Override
-			public void removeUpdate(DocumentEvent e) {
+			public void removeUpdate(DocumentEvent e) { fireUpdate(); }
+			
+			private void fireUpdate() {
 				if (!doc.isSilent()) {
 					update();
 				}
@@ -163,4 +160,6 @@ public class CodePane {
 			}
 		});
 	}
+	
+	
 }

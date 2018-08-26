@@ -8,6 +8,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.fwcd:Fructose:920c990cf65a69e2b13701912e2a5054ca6321ad'
+    api 'com.github.fwcd:Fructose:920c990cf65a69e2b13701912e2a5054ca6321ad'
     testImplementation 'junit:junit:4.12'
 }

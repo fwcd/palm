@@ -13,4 +13,6 @@ public interface Theme {
 	Color mildFGColor();
 
 	Optional<Color> colorOf(ThemedElement element);
+
+	Optional<Color> colorOf(SyntaxElement element);
 }

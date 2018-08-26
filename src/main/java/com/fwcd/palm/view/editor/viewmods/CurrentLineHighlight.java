@@ -5,12 +5,12 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
-import com.fwcd.palm.view.editor.PalmEditor;
+import com.fwcd.palm.view.editor.PalmEditorView;
 import com.fwcd.palm.view.theme.ThemedElement;
 
 public class CurrentLineHighlight implements EditorViewModule {
 	@Override
-	public void renderBG(Graphics2D g2d, Dimension canvasSize, PalmEditor editor) {
+	public void renderBG(Graphics2D g2d, Dimension canvasSize, PalmEditorView editor) {
 		FontMetrics metrics = editor.getFontMetrics();
 		int padding = 5;
 		int caretLine = editor.getCaretLine();

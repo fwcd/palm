@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public abstract class TemplateTheme implements Theme {
 	private final Map<ThemedElement, Color> elementMap = new HashMap<>();
+	private final Map<SyntaxElement, Color> syntaxElementMap = new HashMap<>();
 	private Color bgColor = Color.WHITE;
 	private Color mildBgColor = Color.LIGHT_GRAY;
 	private Color fgColor = Color.BLACK;
@@ -27,7 +28,12 @@ public abstract class TemplateTheme implements Theme {
 	@Override
 	public Optional<Color> colorOf(ThemedElement element) { return Optional.ofNullable(elementMap.get(element)); }
 
+	@Override
+	public Optional<Color> colorOf(SyntaxElement element) { return Optional.ofNullable(syntaxElementMap.get(element)); }
+	
 	protected void set(ThemedElement element, Color color) { elementMap.put(element, color); }
+	
+	protected void set(SyntaxElement element, Color color) { syntaxElementMap.put(element, color); }
 
 	protected void setBgColor(Color bgColor) { this.bgColor = bgColor; }
 

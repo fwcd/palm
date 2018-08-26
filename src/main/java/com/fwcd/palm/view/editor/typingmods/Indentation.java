@@ -3,7 +3,7 @@ package com.fwcd.palm.view.editor.typingmods;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fwcd.palm.view.editor.PalmEditor;
+import com.fwcd.palm.view.editor.PalmEditorView;
 
 public class Indentation implements EditorTypingModule {
 	private final Map<String, String> indentors = new HashMap<>();
@@ -26,7 +26,7 @@ public class Indentation implements EditorTypingModule {
 	}
 
 	@Override
-	public void onInsert(String delta, int offset, PalmEditor editor) {
+	public void onInsert(String delta, int offset, PalmEditorView editor) {
 		if (delta.equals("\t")) {
 			editor.removeSilentlyBeforeCaret(delta.length());
 			editor.insertSilentlyBeforeCaret(indent);
@@ -76,7 +76,7 @@ public class Indentation implements EditorTypingModule {
 	}
 
 	@Override
-	public void onRemove(int length, int offset, PalmEditor editor) {
+	public void onRemove(int length, int offset, PalmEditorView editor) {
 
 	}
 }

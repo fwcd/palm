@@ -11,6 +11,11 @@ public class DarkTheme extends TemplateTheme {
 		set(ThemedElement.EDITOR_BG, new Color(0x252525));
 		set(ThemedElement.TOOLBAR, new Color(0x333333));
 		set(ThemedElement.LINE_HIGHLIGHT, new Color(0x333333));
-		set(ThemedElement.SYNTAX_KEYWORD, Color.ORANGE);
+		set(SyntaxElement.KEYWORD, Color.ORANGE);
+		set(SyntaxElement.TYPE, Color.GREEN);
+		set(SyntaxElement.VARIABLE, Color.CYAN);
+		set(SyntaxElement.STRING, Color.ORANGE);
+		set(SyntaxElement.COMMENT, Color.GREEN);
+		set(SyntaxElement.OTHER, Color.BLACK);
 	}
 }

@@ -20,13 +20,13 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
 
 import com.fwcd.fructose.Observable;
 import com.fwcd.fructose.swing.View;
 import com.fwcd.palm.model.PalmDocument;
-import com.fwcd.palm.model.PalmEditorModel;
 import com.fwcd.palm.utils.PalmException;
+import com.fwcd.palm.view.editor.highlighting.EmptyHighlighting;
+import com.fwcd.palm.view.editor.highlighting.SyntaxHighlighting;
 import com.fwcd.palm.view.editor.typingmods.EditorTypingModule;
 import com.fwcd.palm.view.editor.typingmods.Indentation;
 import com.fwcd.palm.view.editor.viewmods.CurrentLineHighlight;
@@ -38,21 +38,23 @@ import com.fwcd.palm.view.theme.ThemedElement;
 import com.fwcd.palm.view.utils.DocumentAdapter;
 import com.fwcd.palm.view.utils.PalmScrollPane;
 
-public class PalmEditor implements View {
-	private final Observable<Theme> theme = new Observable<>(new LightTheme());
+public class PalmEditorView implements View {
 	private final JPanel view;
 	private final PalmScrollPane scrollPane;
-	private final CodePane codePane;
+	private final TextBufferView textBuffer;
 	private final List<EditorTypingModule> typingModules = new ArrayList<>();
 	private final EditorConfig config = new EditorConfig();
+	
+	private final Observable<SyntaxHighlighting> highlighting = new Observable<>(new EmptyHighlighting());
+	private final Observable<Theme> theme = new Observable<>(new LightTheme());
+	
+	private PalmDocument model;
 
-	private PalmEditorModel model;
+	public PalmEditorView() {
+		textBuffer = new TextBufferView(this);
+		textBuffer.setTheme(theme);
 
-	public PalmEditor() {
-		codePane = new CodePane(this);
-		codePane.setTheme(theme);
-
-		scrollPane = new PalmScrollPane(codePane.getComponent(), theme);
+		scrollPane = new PalmScrollPane(textBuffer.getComponent(), theme);
 
 		view = new JPanel();
 		view.setLayout(new BorderLayout());
@@ -65,25 +67,19 @@ public class PalmEditor implements View {
 		setModel(new PalmDocument());
 
 		typingModules().add(new Indentation());
-//		typingModules().add(new SymbolCloser()); FIXME: Too buggy to use productively yet, unfortunately
-		model.getLanguage().listenAndFire(language -> {
-			language.ifPresent(lang -> {
-				// FIXME: Remove old syntax highlighter
-				viewModules().add(new SyntaxHighlighter(this, lang));
-			});
-		});
+		viewModules().add(new SyntaxHighlighter(this, highlighting));
 		viewModules().add(new CurrentLineHighlight());
 
 		update();
 	}
 
 	public void addKeybind(KeyStroke bind, Runnable onPress) {
-		codePane.addKeybind(bind, onPress);
+		textBuffer.addKeybind(bind, onPress);
 	}
 
-	private void setModel(PalmEditorModel model) {
+	private void setModel(PalmDocument model) {
 		this.model = model;
-		codePane.setModel(model);
+		textBuffer.setModel(model);
 		model.addDocumentListener(new DocumentAdapter() {
 
 			@Override
@@ -98,7 +94,7 @@ public class PalmEditor implements View {
 
 					SwingUtilities.invokeLater(() -> {
 						for (EditorTypingModule module : typingModules) {
-							module.onInsert(delta, e.getOffset(), PalmEditor.this);
+							module.onInsert(delta, e.getOffset(), PalmEditorView.this);
 						}
 					});
 				}
@@ -109,7 +105,7 @@ public class PalmEditor implements View {
 				if (!model.isSilent()) {
 					SwingUtilities.invokeLater(() -> {
 						for (EditorTypingModule module : typingModules) {
-							module.onRemove(e.getLength(), e.getOffset(), PalmEditor.this);
+							module.onRemove(e.getLength(), e.getOffset(), PalmEditorView.this);
 						}
 					});
 				}
@@ -120,7 +116,7 @@ public class PalmEditor implements View {
 
 	public void save(File file) {
 		try {
-			codePane.getFG().write(new FileWriter(file));
+			textBuffer.getFG().write(new FileWriter(file));
 		} catch (IOException e) {
 			throw new PalmException(e);
 		}
@@ -147,7 +143,7 @@ public class PalmEditor implements View {
 	}
 
 	public void focus() {
-		codePane.getFG().requestFocusInWindow();
+		textBuffer.getFG().requestFocusInWindow();
 	}
 
 	public String[] getLines() {
@@ -205,11 +201,11 @@ public class PalmEditor implements View {
 	}
 
 	public void setCaretPos(int pos) {
-		codePane.getFG().setCaretPosition(pos);
+		textBuffer.getFG().setCaretPosition(pos);
 	}
 
 	public int getCaretPos() {
-		return codePane.getFG().getCaretPosition();
+		return textBuffer.getFG().getCaretPosition();
 	}
 
 	public List<EditorTypingModule> typingModules() {
@@ -217,7 +213,7 @@ public class PalmEditor implements View {
 	}
 
 	public List<EditorViewModule> viewModules() {
-		return codePane.getModules();
+		return textBuffer.getModules();
 	}
 
 	public void setFontSize(int size) {
@@ -226,11 +222,11 @@ public class PalmEditor implements View {
 	}
 
 	private void update() {
-		codePane.getFG().setFont(config.getFont());
+		textBuffer.getFG().setFont(config.getFont());
 	}
 
-	public CodePane getCodePane() {
-		return codePane;
+	public TextBufferView getCodePane() {
+		return textBuffer;
 	}
 	
 	@Override
@@ -254,7 +250,7 @@ public class PalmEditor implements View {
 		return model.getLength();
 	}
 
-	public StyledDocument getStyledDoc() {
+	public PalmDocument getDocument() {
 		return model;
 	}
 
@@ -263,7 +259,7 @@ public class PalmEditor implements View {
 	}
 
 	public FontMetrics getFontMetrics() {
-		return codePane.getFG().getGraphics().getFontMetrics();
+		return textBuffer.getFG().getGraphics().getFontMetrics();
 	}
 	
 	public Observable<Theme> getTheme() {
