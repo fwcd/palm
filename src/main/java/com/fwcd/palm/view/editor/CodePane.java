@@ -116,7 +116,7 @@ public class CodePane {
 		return foreground;
 	}
 
-	public JComponent getView() {
+	public JComponent getComponent() {
 		return view;
 	}
 

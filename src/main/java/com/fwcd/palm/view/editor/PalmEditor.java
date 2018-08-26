@@ -23,7 +23,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
 import com.fwcd.fructose.Observable;
-import com.fwcd.fructose.swing.Viewable;
+import com.fwcd.fructose.swing.View;
 import com.fwcd.palm.model.PalmDocument;
 import com.fwcd.palm.model.PalmEditorModel;
 import com.fwcd.palm.utils.PalmException;
@@ -38,7 +38,7 @@ import com.fwcd.palm.view.theme.ThemedElement;
 import com.fwcd.palm.view.utils.DocumentAdapter;
 import com.fwcd.palm.view.utils.PalmScrollPane;
 
-public class PalmEditor implements Viewable {
+public class PalmEditor implements View {
 	private final Observable<Theme> theme = new Observable<>(new LightTheme());
 	private final JPanel view;
 	private final PalmScrollPane scrollPane;
@@ -52,7 +52,7 @@ public class PalmEditor implements Viewable {
 		codePane = new CodePane(this);
 		codePane.setTheme(theme);
 
-		scrollPane = new PalmScrollPane(codePane.getView(), theme);
+		scrollPane = new PalmScrollPane(codePane.getComponent(), theme);
 
 		view = new JPanel();
 		view.setLayout(new BorderLayout());
@@ -234,7 +234,7 @@ public class PalmEditor implements Viewable {
 	}
 	
 	@Override
-	public JComponent getView() {
+	public JComponent getComponent() {
 		return view;
 	}
 
