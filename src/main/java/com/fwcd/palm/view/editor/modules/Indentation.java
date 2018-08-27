@@ -33,7 +33,7 @@ public class Indentation implements EditorTypingModule {
 			editor.insertSilentlyBeforeCaret(indent);
 		}
 
-		String[] lines = editor.getLines();
+		String[] lines = editor.getModel().getLines();
 		int caretLine = editor.getCaretLine();
 
 		if (delta.endsWith(PalmDocument.NEWLINE)) {

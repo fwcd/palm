@@ -30,7 +30,7 @@ public class SymbolCloser implements EditorTypingModule {
 				if (delta.endsWith(symbol)) {
 					editor.insertSilentlyAfterCaret(closeSymbol);
 					recentlyInserted = symbol;
-				} else if (delta.endsWith(closeSymbol) && offset != editor.getTextLength() - 1) {
+				} else if (delta.endsWith(closeSymbol) && offset != editor.getModel().getLength() - 1) {
 					editor.removeSilentlyAfterCaret(1);
 				}
 			}
@@ -47,7 +47,7 @@ public class SymbolCloser implements EditorTypingModule {
 			int posAfterCaret = offset - length + 1;
 			if (recentlyInserted != null
 					&& recentlyInserted.equals(symbol)
-					&& editor.getText(posAfterCaret, 1).equals(closeSymbol)) {
+					&& editor.getModel().getText(posAfterCaret, 1).equals(closeSymbol)) {
 				editor.removeSilently(posAfterCaret, 1);
 			}
 		}

@@ -10,7 +10,7 @@ public interface EditorTypingModule {
 	 * @param offset - The offset at the beginning of the change
 	 * @param editor - The editor
 	 */
-	void onInsert(String delta, int offset, PalmEditorView editor);
+	default void onInsert(String delta, int offset, PalmEditorView editor) {}
 
 	/**
 	 * Called when something is removed from the editor.
@@ -19,5 +19,5 @@ public interface EditorTypingModule {
 	 * @param offset - The offset at the beginning of the change
 	 * @param editor - The editor
 	 */
-	void onRemove(int length, int offset, PalmEditorView editor);
+	default void onRemove(int length, int offset, PalmEditorView editor) {}
 }

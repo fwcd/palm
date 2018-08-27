@@ -3,6 +3,7 @@ package com.fwcd.palm.model;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Element;
 
 import com.fwcd.palm.utils.PalmException;
 
@@ -13,6 +14,33 @@ public class PalmDocument extends DefaultStyledDocument {
 	
 	{
 		putProperty(DefaultEditorKit.EndOfLineStringProperty, NEWLINE);
+	}
+	
+	public String[] getLines() {
+		return getText().split(NEWLINE, -1);
+	}
+	
+	public String getText() {
+		return getText(0, getLength());
+	}
+	
+	@Override
+	public String getText(int offset, int length) {
+		try {
+			return super.getText(offset, length);
+		} catch (BadLocationException e) {
+			throw new PalmException(e);
+		}
+	}
+	
+	public String getLine(int line) {
+		// TODO: This relies on the internal element structure
+		// but is much faster than getLines()[line]
+		
+		Element element = getDefaultRootElement().getElement(line);
+		int offset = element.getStartOffset();
+		int length = element.getEndOffset() - element.getStartOffset();
+		return getText(offset, length);
 	}
 	
 	public void appendLine(String text) {

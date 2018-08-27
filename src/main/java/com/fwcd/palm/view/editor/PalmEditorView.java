@@ -20,13 +20,17 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 
 import com.fwcd.fructose.Observable;
 import com.fwcd.fructose.swing.View;
 import com.fwcd.palm.model.PalmDocument;
 import com.fwcd.palm.utils.PalmException;
-import com.fwcd.palm.view.editor.highlighting.EmptyHighlighting;
+import com.fwcd.palm.view.editor.completion.CompletionProvider;
+import com.fwcd.palm.view.editor.completion.NoCompletionProvider;
+import com.fwcd.palm.view.editor.highlighting.NoHighlighting;
 import com.fwcd.palm.view.editor.highlighting.SyntaxHighlighting;
+import com.fwcd.palm.view.editor.modules.AutoCompletion;
 import com.fwcd.palm.view.editor.modules.CurrentLineHighlight;
 import com.fwcd.palm.view.editor.modules.EditorTypingModule;
 import com.fwcd.palm.view.editor.modules.EditorViewModule;
@@ -45,7 +49,8 @@ public class PalmEditorView implements View {
 	private final List<EditorTypingModule> typingModules = new ArrayList<>();
 	private final EditorConfig config = new EditorConfig();
 	
-	private final Observable<SyntaxHighlighting> highlighting = new Observable<>(new EmptyHighlighting());
+	private final Observable<CompletionProvider> completionProvider = new Observable<>(new NoCompletionProvider());
+	private final Observable<SyntaxHighlighting> highlighting = new Observable<>(new NoHighlighting());
 	private final Observable<Theme> theme = new Observable<>(new LightTheme());
 	
 	private PalmDocument model;
@@ -66,9 +71,14 @@ public class PalmEditorView implements View {
 
 		setModel(new PalmDocument());
 
-		typingModules().add(new Indentation());
-		viewModules().add(new SyntaxHighlighter(this, highlighting));
-		viewModules().add(new CurrentLineHighlight());
+		List<EditorViewModule> viewModules = getViewModules();
+		AutoCompletion completion = new AutoCompletion(completionProvider);
+		
+		typingModules.add(new Indentation());
+		typingModules.add(completion);
+		viewModules.add(new SyntaxHighlighter(this, highlighting));
+		viewModules.add(new CurrentLineHighlight());
+		viewModules.add(completion);
 
 		update();
 	}
@@ -81,16 +91,10 @@ public class PalmEditorView implements View {
 		this.model = model;
 		textBuffer.setModel(model);
 		model.addDocumentListener(new DocumentAdapter() {
-
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				if (!model.isSilent()) {
-					String delta;
-					try {
-						delta = model.getText(e.getOffset(), e.getLength());
-					} catch (BadLocationException ex) {
-						throw new RuntimeException(ex);
-					}
+					String delta = model.getText(e.getOffset(), e.getLength());
 
 					SwingUtilities.invokeLater(() -> {
 						for (EditorTypingModule module : typingModules) {
@@ -110,7 +114,6 @@ public class PalmEditorView implements View {
 					});
 				}
 			}
-
 		});
 	}
 
@@ -146,14 +149,6 @@ public class PalmEditorView implements View {
 		textBuffer.getFG().requestFocusInWindow();
 	}
 
-	public String[] getLines() {
-		try {
-			return model.getText(0, model.getLength()).split(PalmDocument.NEWLINE, -1);
-		} catch (BadLocationException e) {
-			throw new PalmException(e);
-		}
-	}
-
 	public synchronized void insert(int offset, String delta) {
 		try {
 			model.insertString(offset, delta, null);
@@ -179,34 +174,42 @@ public class PalmEditorView implements View {
 	}
 
 	public synchronized void removeSilentlyBeforeCaret(int length) {
-		removeSilently(getCaretPos() - length, length);
+		removeSilently(getCaretOffset() - length, length);
 	}
 
 	public synchronized void removeSilentlyAfterCaret(int length) {
-		removeSilently(getCaretPos(), length);
+		removeSilently(getCaretOffset(), length);
 	}
 
 	public synchronized void insertSilentlyBeforeCaret(String delta) {
-		insertSilently(getCaretPos(), delta);
+		insertSilently(getCaretOffset(), delta);
 	}
 
 	public synchronized void insertSilentlyAfterCaret(String delta) {
-		int prevCaretPos = getCaretPos();
+		int prevCaretPos = getCaretOffset();
 		insertSilently(prevCaretPos, delta);
-		setCaretPos(prevCaretPos);
+		setCaretOffset(prevCaretPos);
 	}
 
-	public int getCaretLine() { return model.getDefaultRootElement().getElementIndex(getCaretPos()); }
-
-	public void setCaretPos(int pos) {
-		textBuffer.getFG().setCaretPosition(pos);
+	public int getCaretLine() { return model.getDefaultRootElement().getElementIndex(getCaretOffset()); }
+	
+	public int getCaretColumn() {
+		int caretOffset = getCaretOffset();
+		Element element = model.getDefaultRootElement().getElement(getCaretLine());
+		if (element == null) {
+			return 0;
+		} else {
+			return caretOffset - element.getStartOffset();
+		}
 	}
 
-	public int getCaretPos() { return textBuffer.getFG().getCaretPosition(); }
+	public void setCaretOffset(int pos) { textBuffer.getFG().setCaretPosition(pos); }
 
-	public List<EditorTypingModule> typingModules() { return typingModules; }
+	public int getCaretOffset() { return textBuffer.getFG().getCaretPosition(); }
 
-	public List<EditorViewModule> viewModules() { return textBuffer.getModules(); }
+	public List<EditorTypingModule> getTypingModules() { return typingModules; }
+
+	public List<EditorViewModule> getViewModules() { return textBuffer.getModules(); }
 
 	public void setFontSize(int size) {
 		config.setSize(size);
@@ -222,18 +225,6 @@ public class PalmEditorView implements View {
 	@Override
 	public JComponent getComponent() { return view; }
 
-	public String getText() { return getText(0, getTextLength()); }
-
-	public String getText(int offset, int length) {
-		try {
-			return model.getText(offset, length);
-		} catch (BadLocationException e) {
-			return "";
-		}
-	}
-
-	public int getTextLength() { return model.getLength(); }
-
 	public PalmDocument getModel() { return model; }
 
 	public Color getBGColor() { return view.getBackground(); }
@@ -243,4 +234,6 @@ public class PalmEditorView implements View {
 	public Observable<Theme> getTheme() { return theme; }
 	
 	public Observable<SyntaxHighlighting> getHighlighting() { return highlighting; }
+	
+	public Observable<CompletionProvider> getCompletionProvider() { return completionProvider; }
 }
