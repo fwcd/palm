@@ -7,6 +7,7 @@ import com.fwcd.palm.model.PalmDocument;
 import com.fwcd.palm.model.TextRange;
 import com.fwcd.palm.view.theme.SyntaxElement;
 import com.fwcd.palm.view.theme.Theme;
+import com.fwcd.palm.view.utils.FontStyle;
 import com.fwcd.palm.view.utils.TextStyle;
 
 public class TextStyler {
@@ -28,6 +29,11 @@ public class TextStyler {
 	
 	public void colorize(TextRange range, SyntaxElement element) {
 		TextStyle style = new TextStyle(theme.get().colorOf(element).orElseGet(theme.get()::fgColor));
+		document.setCharacterAttributes(range.getOffset(), range.getLength(), style, true);
+	}
+	
+	public void colorize(TextRange range, SyntaxElement element, FontStyle fontStyle) {
+		TextStyle style = new TextStyle(fontStyle, theme.get().colorOf(element).orElseGet(theme.get()::fgColor));
 		document.setCharacterAttributes(range.getOffset(), range.getLength(), style, true);
 	}
 }

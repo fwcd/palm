@@ -23,6 +23,10 @@ public class TextStyle implements Style {
 		this.attribs = new HashMap<>(attribs);
 	}
 
+	public TextStyle(FontStyle style, Color color) {
+		this(style.isBold(), style.isItalic(), style.isUnderlined(), color);
+	}
+
 	public TextStyle(Color color) {
 		this(false, false, false, color);
 	}
@@ -49,22 +53,16 @@ public class TextStyle implements Style {
 		fireListeners();
 	}
 
-	public boolean isBold() {
-		return (boolean) attribs.get("bold");
-	}
+	public boolean isBold() { return (boolean) attribs.get("bold"); }
 
-	public boolean isItalic() {
-		return (boolean) attribs.get("italic");
-	}
+	public boolean isItalic() { return (boolean) attribs.get("italic"); }
 
-	public boolean isUnderlined() {
-		return (boolean) attribs.get("underlined");
-	}
+	public boolean isUnderlined() { return (boolean) attribs.get("underlined"); }
 
-	public Color getColor() {
-		return (Color) attribs.get("color");
-	}
-
+	public Color getColor() { return (Color) attribs.get("color"); }
+	
+	public FontStyle getFontStyle() { return new FontStyle(isBold(), isItalic(), isUnderlined()); }
+	
 	private void fireListeners() {
 		for (ChangeListener listener : listeners) {
 			listener.stateChanged(new ChangeEvent(this));
