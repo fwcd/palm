@@ -30,12 +30,12 @@ import com.fwcd.palm.view.editor.completion.CompletionProvider;
 import com.fwcd.palm.view.editor.completion.NoCompletionProvider;
 import com.fwcd.palm.view.editor.highlighting.NoHighlighting;
 import com.fwcd.palm.view.editor.highlighting.SyntaxHighlighting;
-import com.fwcd.palm.view.editor.modules.AutoCompletion;
+import com.fwcd.palm.view.editor.modules.AutoCompletionView;
 import com.fwcd.palm.view.editor.modules.CurrentLineHighlight;
 import com.fwcd.palm.view.editor.modules.EditorTypingModule;
 import com.fwcd.palm.view.editor.modules.EditorViewModule;
 import com.fwcd.palm.view.editor.modules.Indentation;
-import com.fwcd.palm.view.editor.modules.SyntaxHighlighter;
+import com.fwcd.palm.view.editor.modules.SyntaxHighlightingView;
 import com.fwcd.palm.view.theme.LightTheme;
 import com.fwcd.palm.view.theme.Theme;
 import com.fwcd.palm.view.theme.ThemedElement;
@@ -72,11 +72,11 @@ public class PalmEditorView implements View {
 		setModel(new PalmDocument());
 
 		List<EditorViewModule> viewModules = getViewModules();
-		AutoCompletion completion = new AutoCompletion(completionProvider);
+		AutoCompletionView completion = new AutoCompletionView(completionProvider, theme);
 		
 		typingModules.add(new Indentation());
 		typingModules.add(completion);
-		viewModules.add(new SyntaxHighlighter(this, highlighting));
+		viewModules.add(new SyntaxHighlightingView(this, highlighting));
 		viewModules.add(new CurrentLineHighlight());
 		viewModules.add(completion);
 
