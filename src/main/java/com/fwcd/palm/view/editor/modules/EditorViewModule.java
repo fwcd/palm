@@ -1,4 +1,4 @@
-package com.fwcd.palm.view.editor.viewmods;
+package com.fwcd.palm.view.editor.modules;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;

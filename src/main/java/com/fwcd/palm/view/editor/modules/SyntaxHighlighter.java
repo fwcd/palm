@@ -1,4 +1,4 @@
-package com.fwcd.palm.view.editor.viewmods;
+package com.fwcd.palm.view.editor.modules;
 
 import com.fwcd.fructose.Observable;
 import com.fwcd.palm.view.editor.PalmEditorView;

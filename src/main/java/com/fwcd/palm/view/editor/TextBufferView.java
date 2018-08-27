@@ -24,7 +24,7 @@ import javax.swing.text.PlainDocument;
 import com.fwcd.fructose.Observable;
 import com.fwcd.fructose.swing.View;
 import com.fwcd.palm.model.PalmDocument;
-import com.fwcd.palm.view.editor.viewmods.EditorViewModule;
+import com.fwcd.palm.view.editor.modules.EditorViewModule;
 import com.fwcd.palm.view.theme.Theme;
 import com.fwcd.palm.view.utils.CustomTabSizeEditorKit;
 import com.fwcd.palm.view.utils.DocumentAdapter;

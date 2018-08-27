@@ -1,4 +1,4 @@
-package com.fwcd.palm.view.editor.typingmods;
+package com.fwcd.palm.view.editor.modules;
 
 import com.fwcd.palm.view.editor.PalmEditorView;
 
