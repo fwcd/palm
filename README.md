@@ -1,2 +1,2 @@
 # Palm
-A pure-Java code editing component for Swing featuring syntax highlighting, indentation and more.
+A code editing widget for Swing featuring syntax highlighting, indentation and more. It provides the foundation for [Breeze](https://github.com/fwcd/Breeze).
