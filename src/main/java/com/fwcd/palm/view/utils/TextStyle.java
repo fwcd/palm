@@ -13,7 +13,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 
-import com.fwcd.palm.utils.Multerator;
+import com.fwcd.fructose.Multerator;
 
 public class TextStyle implements Style {
 	private final Map<Object, Object> attribs;
