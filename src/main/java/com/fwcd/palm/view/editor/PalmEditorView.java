@@ -148,7 +148,7 @@ public class PalmEditorView implements View {
 
 	public String[] getLines() {
 		try {
-			return model.getText(0, model.getLength()).split("\n", -1);
+			return model.getText(0, model.getLength()).split(PalmDocument.NEWLINE, -1);
 		} catch (BadLocationException e) {
 			throw new PalmException(e);
 		}
@@ -196,25 +196,17 @@ public class PalmEditorView implements View {
 		setCaretPos(prevCaretPos);
 	}
 
-	public int getCaretLine() {
-		return model.getDefaultRootElement().getElementIndex(getCaretPos());
-	}
+	public int getCaretLine() { return model.getDefaultRootElement().getElementIndex(getCaretPos()); }
 
 	public void setCaretPos(int pos) {
 		textBuffer.getFG().setCaretPosition(pos);
 	}
 
-	public int getCaretPos() {
-		return textBuffer.getFG().getCaretPosition();
-	}
+	public int getCaretPos() { return textBuffer.getFG().getCaretPosition(); }
 
-	public List<EditorTypingModule> typingModules() {
-		return typingModules;
-	}
+	public List<EditorTypingModule> typingModules() { return typingModules; }
 
-	public List<EditorViewModule> viewModules() {
-		return textBuffer.getModules();
-	}
+	public List<EditorViewModule> viewModules() { return textBuffer.getModules(); }
 
 	public void setFontSize(int size) {
 		config.setSize(size);
@@ -225,18 +217,12 @@ public class PalmEditorView implements View {
 		textBuffer.getFG().setFont(config.getFont());
 	}
 
-	public TextBufferView getCodePane() {
-		return textBuffer;
-	}
+	public TextBufferView getTextBuffer() { return textBuffer; }
 	
 	@Override
-	public JComponent getComponent() {
-		return view;
-	}
+	public JComponent getComponent() { return view; }
 
-	public String getText() {
-		return getText(0, getTextLength());
-	}
+	public String getText() { return getText(0, getTextLength()); }
 
 	public String getText(int offset, int length) {
 		try {
@@ -246,23 +232,15 @@ public class PalmEditorView implements View {
 		}
 	}
 
-	public int getTextLength() {
-		return model.getLength();
-	}
+	public int getTextLength() { return model.getLength(); }
 
-	public PalmDocument getDocument() {
-		return model;
-	}
+	public PalmDocument getModel() { return model; }
 
-	public Color getBGColor() {
-		return view.getBackground();
-	}
+	public Color getBGColor() { return view.getBackground(); }
 
-	public FontMetrics getFontMetrics() {
-		return textBuffer.getFG().getGraphics().getFontMetrics();
-	}
+	public FontMetrics getFontMetrics() { return textBuffer.getFG().getGraphics().getFontMetrics(); }
 	
-	public Observable<Theme> getTheme() {
-		return theme;
-	}
+	public Observable<Theme> getTheme() { return theme; }
+	
+	public Observable<SyntaxHighlighting> getHighlighting() { return highlighting; }
 }

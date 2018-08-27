@@ -11,11 +11,11 @@ public class SyntaxHighlighter implements EditorViewModule {
 
 	public SyntaxHighlighter(PalmEditorView editor, Observable<SyntaxHighlighting> highlighting) {
 		this.highlighting = highlighting;
-		styler = new TextStyler(editor.getTheme(), editor.getDocument());
+		styler = new TextStyler(editor.getTheme(), editor.getModel());
 	}
 
 	@Override
 	public void format(String text, PalmEditorView editor) {
-		highlighting.get().performHighlighting(styler);
+		highlighting.get().performHighlighting(text, styler);
 	}
 }

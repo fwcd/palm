@@ -1,15 +1,19 @@
 package com.fwcd.palm.model;
 
 public class TextRange {
-	private final int startOffset;
-	private final int endOffset;
+	private final int offset;
+	private final int length;
 	
-	public TextRange(int startOffset, int endOffset) {
-		this.startOffset = startOffset;
-		this.endOffset = endOffset;
+	public TextRange(int offset, int length) {
+		this.offset = offset;
+		this.length = length;
 	}
 	
-	public int getStartOffset() { return startOffset; }
+	public static TextRange between(int startIndex, int endIndexExclusive) {
+		return new TextRange(startIndex, endIndexExclusive - startIndex);
+	}
 	
-	public int getEndOffset() { return endOffset; }
+	public int getOffset() { return offset; }
+	
+	public int getLength() { return length; }
 }

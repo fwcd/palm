@@ -3,6 +3,7 @@ package com.fwcd.palm.view.editor.typingmods;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fwcd.palm.model.PalmDocument;
 import com.fwcd.palm.view.editor.PalmEditorView;
 
 public class Indentation implements EditorTypingModule {
@@ -11,7 +12,7 @@ public class Indentation implements EditorTypingModule {
 	private String newBlockCloser = null;
 
 	public Indentation() {
-		indentors.put("{", "\n"); // FIXME: Bug when indentation level is larger than 0
+		indentors.put("{", PalmDocument.NEWLINE); // FIXME: Bug when indentation level is larger than 0
 		indentors.put(":", "");
 
 		setStyle(IndentationStyle.TABS);
@@ -35,7 +36,7 @@ public class Indentation implements EditorTypingModule {
 		String[] lines = editor.getLines();
 		int caretLine = editor.getCaretLine();
 
-		if (delta.endsWith("\n")) {
+		if (delta.endsWith(PalmDocument.NEWLINE)) {
 			if (caretLine > 0) {
 				String lastLine = lines[caretLine - 1];
 				int indentationDepth = indentationDepth(lastLine);
