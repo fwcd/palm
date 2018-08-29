@@ -6,24 +6,34 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import com.fwcd.palm.controller.editor.mods.EditorControllerModule;
+import com.fwcd.palm.model.editor.mods.completion.AutoCompletionModel;
 import com.fwcd.palm.view.editor.Keybindable;
 import com.fwcd.palm.view.editor.mods.completion.AutoCompletionView;
 import com.fwcd.palm.viewmodel.editor.PalmEditorViewModel;
 
 public class AutoCompletionController implements EditorControllerModule {
-	private final AutoCompletionView view;
+	private final AutoCompletionModel model;
 	private final Keybindable keyBinder;
 	private final List<Keybind> keyBinds = new ArrayList<>();
 	
-	public AutoCompletionController(AutoCompletionView view, Keybindable keyBinder) {
-		this.view = view;
+	public AutoCompletionController(
+		AutoCompletionView view,
+		AutoCompletionModel model,
+		PalmEditorViewModel editor,
+		Keybindable keyBinder
+	) {
+		this.model = model;
 		this.keyBinder = keyBinder;
 		
-		addActiveKeybind("UP", () -> view.changeSelectedIndex(-1));
-		addActiveKeybind("DOWN", () -> view.changeSelectedIndex(1));
-		addActiveKeybind("ESCAPE", () -> view.hide());
+		addActiveKeybind("UP", () -> model.changeSelectedIndex(-1));
+		addActiveKeybind("DOWN", () -> model.changeSelectedIndex(1));
+		addActiveKeybind("ESCAPE", () -> model.hide());
+		addActiveKeybind("ENTER", () -> {
+			editor.insertSilentlyBeforeCaret(model.getSelectedElement().get().getCompletion());
+			model.hide();
+		});
 		
-		view.isActive().listen(this::toggleKeybinds);
+		model.isActive().listen(this::toggleKeybinds);
 	}
 	
 	private static class Keybind {
@@ -50,8 +60,14 @@ public class AutoCompletionController implements EditorControllerModule {
 		}
 	}
 	
+	private boolean isToggleCharacter(char c) {
+		return Character.isLetter(c) || (c == '.');
+	}
+	
 	@Override
 	public void onInsert(String delta, int offset, PalmEditorViewModel editor) {
-		view.show(editor.getText(), offset);
+		if (isToggleCharacter(delta.charAt(delta.length() - 1))) {
+			model.show(editor.getText(), offset);
+		}
 	}
 }
