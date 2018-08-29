@@ -3,14 +3,19 @@ package com.fwcd.palm.view.editor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FontMetrics;
+import java.awt.Rectangle;
 import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
 
 import com.fwcd.fructose.Observable;
+import com.fwcd.fructose.geometry.Vector2D;
 import com.fwcd.fructose.swing.View;
+import com.fwcd.palm.utils.PalmException;
 import com.fwcd.palm.view.editor.mods.CurrentLineHighlight;
 import com.fwcd.palm.view.editor.mods.EditorViewModule;
 import com.fwcd.palm.view.editor.mods.highlighting.SyntaxHighlightingView;
@@ -91,4 +96,14 @@ public class PalmEditorView implements View, Keybindable {
 	public Observable<Theme> getTheme() { return theme; }
 	
 	public PalmEditorViewModel getViewModel() { return viewModel; }
+	
+	public Vector2D getCaretPixelPosition() {
+		try {
+			JTextComponent fg = textBuffer.getFG();
+			Rectangle rect = fg.getUI().modelToView(fg, viewModel.getCaretOffset().getActual().get());
+			return new Vector2D(rect.getMinX(), rect.getMinY());
+		} catch (BadLocationException e) {
+			throw new PalmException(e);
+		}
+	}
 }

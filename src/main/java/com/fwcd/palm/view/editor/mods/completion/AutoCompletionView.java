@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import com.fwcd.fructose.Observable;
+import com.fwcd.fructose.geometry.Vector2D;
 import com.fwcd.fructose.io.ResourceFile;
 import com.fwcd.palm.model.editor.PalmDocument;
 import com.fwcd.palm.view.editor.PalmEditorView;
@@ -69,17 +70,11 @@ public class AutoCompletionView implements EditorViewModule {
 		if (active.get() && !completions.isEmpty()) {
 			Theme currentTheme = theme.get();
 			FontMetrics metrics = editor.getFontMetrics();
-			PalmEditorViewModel viewModel = editor.getViewModel();
-			PalmDocument model = viewModel.getDocument();
-			int caretLine = viewModel.getCaretLine();
-			int caretColumn = viewModel.getCaretColumn();
-			String charsBeforeCaret = model.getLine(caretLine)
-				.substring(0, caretColumn)
-				.replace("\t", "    "); // TODO: Configurable tab size
+			Vector2D caretPos = editor.getCaretPixelPosition();
 			
 			int lineHeight = metrics.getHeight();
-			int startX = metrics.stringWidth(charsBeforeCaret);
-			int startY = lineHeight * (caretLine + 1);
+			int startX = (int) caretPos.getX();
+			int startY = (int) caretPos.getY() + lineHeight;
 			int x = startX;
 			int y = startY;
 			int i = 0;
