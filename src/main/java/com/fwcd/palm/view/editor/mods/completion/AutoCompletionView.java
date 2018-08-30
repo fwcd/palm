@@ -65,14 +65,18 @@ public class AutoCompletionView implements EditorViewModule {
 			
 			for (CompletionElement element : model.getCompletions()) {
 				Optional<Image> icon = icons.get(element.getType());
-				String label = element.getLabel() + " - " + element.getDetail();
+				String label = element.getLabel();
 				int iconWidth = icon.map(it -> it.getWidth(null)).orElse(16);
 				int iconHeight = icon.map(it -> it.getHeight(null)).orElse(16);
 				int width = iconWidth + metrics.stringWidth(label);
 				int height = iconHeight;
 				Color bgColor = (i == selectedIndex)
-					? currentTheme.bgColor()
+					? currentTheme.popupBGColor()
 					: currentTheme.mildBGColor();
+				
+				if (element.getDetail().length() > 0) {
+					label += " - " + element.getDetail();
+				}
 				
 				g2d.setColor(bgColor);
 				g2d.fillRect(x, y, width, height);

@@ -13,7 +13,7 @@ public class CurrentLineHighlight implements EditorViewModule {
 	public void renderBG(Graphics2D g2d, Dimension canvasSize, PalmEditorView editor) {
 		FontMetrics metrics = editor.getFontMetrics();
 		int padding = 5;
-		int caretLine = editor.getViewModel().getCaretLine();
+		int caretLine = editor.getModel().getCaretLine();
 
 		int width = (int) canvasSize.getWidth();
 		int height = metrics.getHeight() + padding;

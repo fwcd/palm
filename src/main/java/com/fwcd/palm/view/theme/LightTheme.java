@@ -8,6 +8,7 @@ public class LightTheme extends TemplateTheme {
 		setMildBgColor(Color.LIGHT_GRAY);
 		setFgColor(Color.BLACK);
 		setMildFgColor(Color.DARK_GRAY);
+		setPopupBgColor(Color.WHITE.darker());
 		set(ThemedElement.EDITOR_BG, Color.WHITE);
 		set(ThemedElement.TOOLBAR, Color.GRAY);
 		set(ThemedElement.LINE_HIGHLIGHT, new Color(0xdddddd));

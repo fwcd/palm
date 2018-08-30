@@ -95,7 +95,7 @@ public class PalmEditorView implements View, Keybindable {
 	
 	public Observable<Theme> getTheme() { return theme; }
 	
-	public PalmEditorModel getViewModel() { return viewModel; }
+	public PalmEditorModel getModel() { return viewModel; }
 	
 	public Vector2D getCaretPixelPosition() {
 		try {

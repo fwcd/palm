@@ -12,6 +12,7 @@ public abstract class TemplateTheme implements Theme {
 	private Color mildBgColor = Color.LIGHT_GRAY;
 	private Color fgColor = Color.BLACK;
 	private Color mildFgColor = Color.DARK_GRAY;
+	private Color popupBgColor = Color.WHITE.darker();
 
 	@Override
 	public Color bgColor() { return bgColor; }
@@ -24,7 +25,10 @@ public abstract class TemplateTheme implements Theme {
 
 	@Override
 	public Color mildFGColor() { return mildFgColor; }
-
+	
+	@Override
+	public Color popupBGColor() { return popupBgColor; }
+	
 	@Override
 	public Optional<Color> colorOf(ThemedElement element) { return Optional.ofNullable(elementMap.get(element)); }
 
@@ -34,7 +38,9 @@ public abstract class TemplateTheme implements Theme {
 	protected void set(ThemedElement element, Color color) { elementMap.put(element, color); }
 	
 	protected void set(SyntaxElement element, Color color) { syntaxElementMap.put(element, color); }
-
+	
+	protected void setPopupBgColor(Color popupBgColor) { this.popupBgColor = popupBgColor; }
+	
 	protected void setBgColor(Color bgColor) { this.bgColor = bgColor; }
 
 	protected void setMildBgColor(Color mildBgColor) { this.mildBgColor = mildBgColor; }

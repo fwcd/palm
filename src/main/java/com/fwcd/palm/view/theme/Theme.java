@@ -11,6 +11,8 @@ public interface Theme {
 	Color fgColor();
 
 	Color mildFGColor();
+	
+	Color popupBGColor();
 
 	Optional<Color> colorOf(ThemedElement element);
 
