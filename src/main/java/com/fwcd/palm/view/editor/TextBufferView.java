@@ -38,10 +38,10 @@ public class TextBufferView implements View {
 	private final JTextPane foreground;
 	private final Map<String, KeyStroke> keyMappings = new HashMap<>();
 
-	private final TextStyle defaultStyle;
 	private final List<EditorViewModule> modules = new ArrayList<>();
 	private final PalmEditorView parent;
 	private final EventListenerList<CaretEvent> caretListeners = new EventListenerList<>();
+	private TextStyle defaultStyle;
 
 	private PalmDocument model;
 
@@ -129,6 +129,7 @@ public class TextBufferView implements View {
 		theme.listenAndFire(it -> {
 			foreground.setForeground(it.fgColor());
 			foreground.setCaretColor(it.fgColor());
+			defaultStyle = new TextStyle(parent.getTheme().get().fgColor());
 		});
 	}
 

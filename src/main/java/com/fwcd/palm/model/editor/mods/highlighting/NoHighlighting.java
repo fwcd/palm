@@ -1,4 +1,4 @@
-package com.fwcd.palm.viewmodel.editor.mods.highlighting;
+package com.fwcd.palm.model.editor.mods.highlighting;
 
 public class NoHighlighting implements SyntaxHighlighter {
 	@Override

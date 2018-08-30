@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.fwcd.palm.controller.editor.mods.EditorControllerModule;
 import com.fwcd.palm.model.editor.PalmDocument;
-import com.fwcd.palm.viewmodel.editor.PalmEditorViewModel;
+import com.fwcd.palm.model.editor.PalmEditorModel;
 
 public class Indentation implements EditorControllerModule {
 	private final Map<String, String> indentors = new HashMap<>();
@@ -28,7 +28,7 @@ public class Indentation implements EditorControllerModule {
 	}
 
 	@Override
-	public void onInsert(String delta, int offset, PalmEditorViewModel editor) {
+	public void onInsert(String delta, int offset, PalmEditorModel editor) {
 		if (delta.equals("\t")) {
 			editor.removeSilentlyBeforeCaret(delta.length());
 			editor.insertSilentlyBeforeCaret(indent);

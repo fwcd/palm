@@ -18,8 +18,8 @@ import com.fwcd.palm.model.editor.mods.completion.AutoCompletionModel;
 import com.fwcd.palm.view.editor.PalmEditorView;
 import com.fwcd.palm.view.editor.mods.EditorViewModule;
 import com.fwcd.palm.view.theme.Theme;
-import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionElement;
-import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionType;
+import com.fwcd.palm.model.editor.mods.completion.CompletionElement;
+import com.fwcd.palm.model.editor.mods.completion.CompletionType;
 
 public class AutoCompletionView implements EditorViewModule {
 	private static final Map<CompletionType, Optional<Image>> icons = new HashMap<>();

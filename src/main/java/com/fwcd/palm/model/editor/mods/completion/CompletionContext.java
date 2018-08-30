@@ -1,14 +1,14 @@
-package com.fwcd.palm.viewmodel.editor.mods.completion;
+package com.fwcd.palm.model.editor.mods.completion;
 
-import com.fwcd.palm.viewmodel.editor.PalmEditorViewModel;
+import com.fwcd.palm.model.editor.PalmEditorModel;
 
 public class CompletionContext {
-	private final PalmEditorViewModel textModel;
+	private final PalmEditorModel textModel;
 	private final String delta;
 	private final int offset;
 	private final String word;
 	
-	public CompletionContext(PalmEditorViewModel textModel, String delta, int offset) {
+	public CompletionContext(PalmEditorModel textModel, String delta, int offset) {
 		this.textModel = textModel;
 		this.delta = delta;
 		this.offset = offset;
@@ -22,7 +22,7 @@ public class CompletionContext {
 	
 	public int getNewOffset() { return offset + delta.length(); }
 	
-	public PalmEditorViewModel getTextModel() { return textModel; }
+	public PalmEditorModel getTextModel() { return textModel; }
 	
 	public String getOldWord() { return word; }
 	

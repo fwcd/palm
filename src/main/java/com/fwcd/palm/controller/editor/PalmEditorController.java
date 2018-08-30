@@ -14,13 +14,13 @@ import com.fwcd.palm.view.editor.PalmEditorView;
 import com.fwcd.palm.view.editor.mods.Indentation;
 import com.fwcd.palm.view.editor.mods.completion.AutoCompletionView;
 import com.fwcd.palm.view.utils.DocumentAdapter;
-import com.fwcd.palm.viewmodel.editor.PalmEditorViewModel;
+import com.fwcd.palm.model.editor.PalmEditorModel;
 
 public class PalmEditorController {
-	private final PalmEditorViewModel viewModel;
+	private final PalmEditorModel viewModel;
 	private final List<EditorControllerModule> modules = new ArrayList<>();
 	
-	public PalmEditorController(PalmEditorView view, PalmEditorViewModel viewModel) {
+	public PalmEditorController(PalmEditorView view, PalmEditorModel viewModel) {
 		this.viewModel = viewModel;
 		
 		AutoCompletionModel completionModel = new AutoCompletionModel(viewModel.getCompletionProvider());

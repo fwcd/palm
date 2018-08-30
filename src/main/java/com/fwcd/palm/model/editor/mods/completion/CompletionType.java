@@ -1,4 +1,4 @@
-package com.fwcd.palm.viewmodel.editor.mods.completion;
+package com.fwcd.palm.model.editor.mods.completion;
 
 public enum CompletionType {
 	METHOD,

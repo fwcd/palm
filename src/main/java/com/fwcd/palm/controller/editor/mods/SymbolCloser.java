@@ -3,7 +3,7 @@ package com.fwcd.palm.controller.editor.mods;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fwcd.palm.viewmodel.editor.PalmEditorViewModel;
+import com.fwcd.palm.model.editor.PalmEditorModel;
 
 public class SymbolCloser implements EditorControllerModule {
 	private final Map<String, String> symbols = new HashMap<>();
@@ -18,7 +18,7 @@ public class SymbolCloser implements EditorControllerModule {
 	}
 
 	@Override
-	public void onInsert(String delta, int offset, PalmEditorViewModel editor) {
+	public void onInsert(String delta, int offset, PalmEditorModel editor) {
 		recentlyInserted = null;
 
 		// FIXME: Bug - deleting wrong symbols when typing for example System.out.println("test")
@@ -38,7 +38,7 @@ public class SymbolCloser implements EditorControllerModule {
 	}
 
 	@Override
-	public void onRemove(int length, int offset, PalmEditorViewModel editor) {
+	public void onRemove(int length, int offset, PalmEditorModel editor) {
 		// FIXME: Fix bug with symbols that have equal opening and closing symbols
 
 		for (String symbol : symbols.keySet()) {

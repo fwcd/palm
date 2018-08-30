@@ -10,8 +10,8 @@ import com.fwcd.palm.controller.editor.mods.EditorControllerModule;
 import com.fwcd.palm.model.editor.mods.completion.AutoCompletionModel;
 import com.fwcd.palm.view.editor.Keybindable;
 import com.fwcd.palm.view.editor.mods.completion.AutoCompletionView;
-import com.fwcd.palm.viewmodel.editor.PalmEditorViewModel;
-import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionContext;
+import com.fwcd.palm.model.editor.PalmEditorModel;
+import com.fwcd.palm.model.editor.mods.completion.CompletionContext;
 
 public class AutoCompletionController implements EditorControllerModule {
 	private final AutoCompletionModel model;
@@ -21,7 +21,7 @@ public class AutoCompletionController implements EditorControllerModule {
 	public AutoCompletionController(
 		AutoCompletionView view,
 		AutoCompletionModel model,
-		PalmEditorViewModel editor,
+		PalmEditorModel editor,
 		Keybindable keyBinder
 	) {
 		this.model = model;
@@ -72,7 +72,7 @@ public class AutoCompletionController implements EditorControllerModule {
 	}
 	
 	@Override
-	public void onInsert(String delta, int offset, PalmEditorViewModel editor) {
+	public void onInsert(String delta, int offset, PalmEditorModel editor) {
 		if (isToggleCharacter(delta.charAt(delta.length() - 1))) {
 			model.show(new CompletionContext(editor, delta, offset));
 		}

@@ -6,9 +6,9 @@ import com.fwcd.fructose.Observable;
 import com.fwcd.fructose.structs.ObservableList;
 import com.fwcd.palm.utils.Integers;
 import com.fwcd.palm.utils.Strings;
-import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionContext;
-import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionElement;
-import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionProvider;
+import com.fwcd.palm.model.editor.mods.completion.CompletionContext;
+import com.fwcd.palm.model.editor.mods.completion.CompletionElement;
+import com.fwcd.palm.model.editor.mods.completion.CompletionProvider;
 
 public class AutoCompletionModel {
 	private final Observable<CompletionProvider> provider;

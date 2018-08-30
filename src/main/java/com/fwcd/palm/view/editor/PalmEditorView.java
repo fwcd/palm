@@ -23,7 +23,7 @@ import com.fwcd.palm.view.theme.LightTheme;
 import com.fwcd.palm.view.theme.Theme;
 import com.fwcd.palm.view.theme.ThemedElement;
 import com.fwcd.palm.view.utils.PalmScrollPane;
-import com.fwcd.palm.viewmodel.editor.PalmEditorViewModel;
+import com.fwcd.palm.model.editor.PalmEditorModel;
 
 public class PalmEditorView implements View, Keybindable {
 	private final JPanel component;
@@ -32,9 +32,9 @@ public class PalmEditorView implements View, Keybindable {
 	private final EditorConfig config = new EditorConfig();
 	
 	private final Observable<Theme> theme = new Observable<>(new LightTheme());
-	private final PalmEditorViewModel viewModel;
+	private final PalmEditorModel viewModel;
 
-	public PalmEditorView(PalmEditorViewModel viewModel) {
+	public PalmEditorView(PalmEditorModel viewModel) {
 		this.viewModel = viewModel;
 		
 		textBuffer = new TextBufferView(this);
@@ -95,7 +95,7 @@ public class PalmEditorView implements View, Keybindable {
 	
 	public Observable<Theme> getTheme() { return theme; }
 	
-	public PalmEditorViewModel getViewModel() { return viewModel; }
+	public PalmEditorModel getViewModel() { return viewModel; }
 	
 	public Vector2D getCaretPixelPosition() {
 		try {

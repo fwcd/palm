@@ -5,8 +5,8 @@ import com.fwcd.palm.model.editor.PalmDocument;
 import com.fwcd.palm.view.editor.PalmEditorView;
 import com.fwcd.palm.view.editor.mods.EditorViewModule;
 import com.fwcd.palm.view.theme.Theme;
-import com.fwcd.palm.viewmodel.editor.mods.highlighting.SyntaxHighlighter;
-import com.fwcd.palm.viewmodel.editor.mods.highlighting.TextStyler;
+import com.fwcd.palm.model.editor.mods.highlighting.SyntaxHighlighter;
+import com.fwcd.palm.model.editor.mods.highlighting.TextStyler;
 
 public class SyntaxHighlightingView implements EditorViewModule {
 	private final Observable<SyntaxHighlighter> highlighting;
