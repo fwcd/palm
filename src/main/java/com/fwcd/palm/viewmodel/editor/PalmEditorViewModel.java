@@ -47,7 +47,13 @@ public class PalmEditorViewModel {
 			right++;
 		}
 		
-		return getText(left, right - left);
+		int length = right - left;
+		
+		if (length > 0) {
+			return getText(left, length);
+		} else {
+			return "";
+		}
 	}
 	
 	public synchronized void perform(TextEdit edit) {

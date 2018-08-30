@@ -19,7 +19,7 @@ import com.fwcd.palm.utils.PalmException;
 import com.fwcd.palm.view.editor.mods.CurrentLineHighlight;
 import com.fwcd.palm.view.editor.mods.EditorViewModule;
 import com.fwcd.palm.view.editor.mods.highlighting.SyntaxHighlightingView;
-import com.fwcd.palm.view.theme.DarkTheme;
+import com.fwcd.palm.view.theme.LightTheme;
 import com.fwcd.palm.view.theme.Theme;
 import com.fwcd.palm.view.theme.ThemedElement;
 import com.fwcd.palm.view.utils.PalmScrollPane;
@@ -31,7 +31,7 @@ public class PalmEditorView implements View, Keybindable {
 	private final TextBufferView textBuffer;
 	private final EditorConfig config = new EditorConfig();
 	
-	private final Observable<Theme> theme = new Observable<>(new DarkTheme());
+	private final Observable<Theme> theme = new Observable<>(new LightTheme());
 	private final PalmEditorViewModel viewModel;
 
 	public PalmEditorView(PalmEditorViewModel viewModel) {

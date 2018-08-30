@@ -30,6 +30,7 @@ public class AutoCompletionController implements EditorControllerModule {
 		addActiveKeybind("UP", () -> model.changeSelectedIndex(-1));
 		addActiveKeybind("DOWN", () -> model.changeSelectedIndex(1));
 		addActiveKeybind("ESCAPE", () -> model.hide());
+		addActiveKeybind("SPACE", () -> model.hide());
 		addActiveKeybind("ENTER", () -> {
 			editor.performSilently(model
 				.getSelectedElement()

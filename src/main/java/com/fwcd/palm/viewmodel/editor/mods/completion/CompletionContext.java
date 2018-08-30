@@ -18,9 +18,13 @@ public class CompletionContext {
 	
 	public String getDelta() { return delta; }
 	
-	public int getOffset() { return offset; }
+	public int getOldOffset() { return offset; }
+	
+	public int getNewOffset() { return offset + delta.length(); }
 	
 	public PalmEditorViewModel getTextModel() { return textModel; }
 	
-	public String getWord() { return word; }
+	public String getOldWord() { return word; }
+	
+	public String getNewWord() { return word + delta; }
 }

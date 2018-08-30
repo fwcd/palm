@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.fwcd.fructose.Observable;
 import com.fwcd.fructose.structs.ObservableList;
+import com.fwcd.palm.utils.Integers;
 import com.fwcd.palm.utils.Strings;
 import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionContext;
 import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionElement;
@@ -27,17 +28,28 @@ public class AutoCompletionModel {
 	
 	public void show(CompletionContext context) {
 		completions.set(provider.get().listCompletions(context));
-		completions.sort((a, b) -> compareCompletions(context.getWord(), a, b));
+		completions.sort((a, b) -> compareCompletions(context.getNewWord(), a, b));
 		if (completions.size() > 0) {
 			active.set(true);
 		}
 	}
 	
 	private int compareCompletions(String word, CompletionElement a, CompletionElement b) {
-		return Integer.compare(
-			Strings.levenshteinDistance(word, a.getCompletion().getEdit().getNewText()),
-			Strings.levenshteinDistance(word, b.getCompletion().getEdit().getNewText())
-		);
+		String completionA = a.getLabel();
+		String completionB = b.getLabel();
+		int maxLength = Integers.max(completionA.length(), completionB.length(), word.length());
+		if (maxLength < 10) {
+			return Integer.compare(
+				Strings.levenshteinDistance(word, completionA),
+				Strings.levenshteinDistance(word, completionB)
+			);
+		} else {
+			return Integer.compare(
+				// Inverted comparision, because more characters mean a closer match
+				Strings.matchedCharsFromStart(word, completionB),
+				Strings.matchedCharsFromStart(word, completionA)
+			);
+		}
 	}
 	
 	public void hide() {

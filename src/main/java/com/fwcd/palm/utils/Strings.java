@@ -1,8 +1,6 @@
 package com.fwcd.palm.utils;
 
 public final class Strings {
-	private static final int MAX_LEVENSHTEIN_DEPTH = 4;
-	
 	private Strings() {}
 	
 	public static int levenshteinDistance(String a, String b) {
@@ -24,13 +22,20 @@ public final class Strings {
 			cost = 1;
 		}
 		
-		if (depth >= MAX_LEVENSHTEIN_DEPTH) return cost;
-		
 		// Return minimum of delete char from a, delete char from b and delete char from both
 		return Integers.min(
 			levenshteinDistance(a, b, lenA - 1, lenB, depth + 1) + 1,
 			levenshteinDistance(a, b, lenA, lenB - 1, depth + 1) + 1,
 			levenshteinDistance(a, b, lenA - 1, lenB - 1, depth + 1) + cost
 		);
+	}
+	
+	public static int matchedCharsFromStart(String a, String b) {
+		int len = Math.min(a.length(), b.length());
+		int i = 0;
+		while ((i < len) && (a.charAt(i) == b.charAt(i))) {
+			i++;
+		}
+		return i;
 	}
 }
