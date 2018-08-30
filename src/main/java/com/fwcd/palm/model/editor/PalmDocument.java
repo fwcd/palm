@@ -1,14 +1,11 @@
 package com.fwcd.palm.model.editor;
 
-import java.util.HashMap;
-
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Element;
 
 import com.fwcd.palm.utils.PalmException;
-import com.fwcd.palm.view.utils.TextStyle;
 
 public class PalmDocument extends DefaultStyledDocument {
 	public static final String NEWLINE = "\n";
@@ -33,7 +30,7 @@ public class PalmDocument extends DefaultStyledDocument {
 	
 	public void setText(String text) {
 		try {
-			replace(0, getLength(), text, new TextStyle(new HashMap<>()));
+			replace(0, getLength(), text, null);
 		} catch (BadLocationException e) {
 			throw new PalmException(e);
 		}
@@ -61,6 +58,16 @@ public class PalmDocument extends DefaultStyledDocument {
 	public void appendLine(String text) {
 		try {
 			insertString(getLength(), text + NEWLINE, null);
+		} catch (BadLocationException e) {
+			throw new PalmException(e);
+		}
+	}
+
+	public void replaceSilently(int offset, int length, String text) {
+		try {
+			silent = true;
+			replace(offset, length, text, null);
+			silent = false;
 		} catch (BadLocationException e) {
 			throw new PalmException(e);
 		}

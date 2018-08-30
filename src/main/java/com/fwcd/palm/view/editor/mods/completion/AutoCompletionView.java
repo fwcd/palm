@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
@@ -21,7 +22,7 @@ import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionElement;
 import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionType;
 
 public class AutoCompletionView implements EditorViewModule {
-	private static final Map<CompletionType, Image> icons = new HashMap<>();
+	private static final Map<CompletionType, Optional<Image>> icons = new HashMap<>();
 	private final Observable<Theme> theme;
 	private final AutoCompletionModel model;
 	
@@ -38,8 +39,13 @@ public class AutoCompletionView implements EditorViewModule {
 		this.theme = theme;
 	}
 	
-	private static Image load(String resourcePath) {
-		return new ResourceFile(resourcePath).mapStream(ImageIO::read);
+	private static Optional<Image> load(String resourcePath) {
+		try {
+			return Optional.of(new ResourceFile(resourcePath).mapStream(ImageIO::read));
+		} catch (IllegalArgumentException e) {
+			System.out.println("Could not load image '" + resourcePath + "'"); // TODO: Use logging instead
+			return Optional.empty();
+		}
 	}
 	
 	@Override
@@ -58,10 +64,10 @@ public class AutoCompletionView implements EditorViewModule {
 			int i = 0;
 			
 			for (CompletionElement element : model.getCompletions()) {
-				Image icon = icons.get(element.getType());
+				Optional<Image> icon = icons.get(element.getType());
 				String label = element.getLabel() + " - " + element.getDetail();
-				int iconWidth = icon.getWidth(null);
-				int iconHeight = icon.getHeight(null);
+				int iconWidth = icon.map(it -> it.getWidth(null)).orElse(16);
+				int iconHeight = icon.map(it -> it.getHeight(null)).orElse(16);
 				int width = iconWidth + metrics.stringWidth(label);
 				int height = iconHeight;
 				Color bgColor = (i == selectedIndex)
@@ -70,7 +76,11 @@ public class AutoCompletionView implements EditorViewModule {
 				
 				g2d.setColor(bgColor);
 				g2d.fillRect(x, y, width, height);
-				g2d.drawImage(icon, x, y, null);
+				
+				if (icon.isPresent()) {
+					g2d.drawImage(icon.orElse(null), x, y, null);
+				}
+				
 				g2d.setColor(currentTheme.fgColor());
 				g2d.drawString(label, x + iconWidth, y + (lineHeight / 2));
 				

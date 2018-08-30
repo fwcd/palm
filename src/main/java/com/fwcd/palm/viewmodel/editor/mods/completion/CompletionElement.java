@@ -4,9 +4,9 @@ public class CompletionElement {
 	private final CompletionType type;
 	private final String label;
 	private final String detail;
-	private final String completion;
+	private final TextCompletion completion;
 	
-	public CompletionElement(CompletionType type, String label, String detail, String completion) {
+	public CompletionElement(CompletionType type, String label, String detail, TextCompletion completion) {
 		this.type = type;
 		this.label = label;
 		this.detail = detail;
@@ -19,5 +19,5 @@ public class CompletionElement {
 	
 	public CompletionType getType() { return type; }
 	
-	public String getCompletion() { return completion; }
+	public TextCompletion getCompletion() { return completion; }
 }

@@ -19,7 +19,11 @@ import com.fwcd.fructose.Multerator;
 public class TextStyle implements Style {
 	private final Map<Object, Object> attribs;
 	private Set<ChangeListener> listeners = new HashSet<>();
-
+	
+	public TextStyle() {
+		attribs = new HashMap<>();
+	}
+	
 	public TextStyle(Map<Object, Object> attribs) {
 		this.attribs = new HashMap<>(attribs);
 	}

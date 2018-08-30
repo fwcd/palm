@@ -8,4 +8,8 @@ public class TextEdit {
 		this.range = range;
 		this.newText = newText;
 	}
+	
+	public String getNewText() { return newText; }
+	
+	public TextRange getRange() { return range; }
 }

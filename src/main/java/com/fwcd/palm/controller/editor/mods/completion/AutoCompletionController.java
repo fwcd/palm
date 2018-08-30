@@ -2,6 +2,7 @@ package com.fwcd.palm.controller.editor.mods.completion;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.swing.KeyStroke;
 
@@ -30,7 +31,11 @@ public class AutoCompletionController implements EditorControllerModule {
 		addActiveKeybind("DOWN", () -> model.changeSelectedIndex(1));
 		addActiveKeybind("ESCAPE", () -> model.hide());
 		addActiveKeybind("ENTER", () -> {
-			editor.insertSilentlyBeforeCaret(model.getSelectedElement().get().getCompletion());
+			editor.performSilently(model
+				.getSelectedElement()
+				.orElseThrow(NoSuchElementException::new)
+				.getCompletion()
+				.getEdit());
 			model.hide();
 		});
 		

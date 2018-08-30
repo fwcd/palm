@@ -26,22 +26,17 @@ public class AutoCompletionModel {
 	public Observable<Integer> getSelectedIndex() { return selectedIndex; }
 	
 	public void show(CompletionContext context) {
-		String delta = context.getDelta();
-		char lastChar = delta.charAt(delta.length() - 1);
-		if (active.get() && Character.isLetter(lastChar)) {
-			// Sort existing completions
-			completions.sort((a, b) -> compareCompletions(context.getWord(), a, b));
-		} else {
-			// Generate new completions
+		completions.set(provider.get().listCompletions(context));
+		completions.sort((a, b) -> compareCompletions(context.getWord(), a, b));
+		if (completions.size() > 0) {
 			active.set(true);
-			completions.set(provider.get().listCompletions(context));
 		}
 	}
 	
 	private int compareCompletions(String word, CompletionElement a, CompletionElement b) {
 		return Integer.compare(
-			Strings.levenshteinDistance(word, a.getCompletion()),
-			Strings.levenshteinDistance(word, b.getCompletion())
+			Strings.levenshteinDistance(word, a.getCompletion().getEdit().getNewText()),
+			Strings.levenshteinDistance(word, b.getCompletion().getEdit().getNewText())
 		);
 	}
 	

@@ -4,6 +4,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
 import com.fwcd.fructose.Observable;
+import com.fwcd.palm.model.TextEdit;
+import com.fwcd.palm.model.TextRange;
 import com.fwcd.palm.model.editor.PalmDocument;
 import com.fwcd.palm.model.editor.PalmEditorModel;
 import com.fwcd.palm.utils.PalmException;
@@ -46,6 +48,20 @@ public class PalmEditorViewModel {
 		}
 		
 		return getText(left, right - left);
+	}
+	
+	public synchronized void perform(TextEdit edit) {
+		TextRange range = edit.getRange();
+		try {
+			model.getDocument().replace(range.getOffset(), range.getLength(), edit.getNewText(), null);
+		} catch (BadLocationException e) {
+			throw new PalmException(e);
+		}
+	}
+	
+	public synchronized void performSilently(TextEdit edit) {
+		TextRange range = edit.getRange();
+		model.getDocument().replaceSilently(range.getOffset(), range.getLength(), edit.getNewText());
 	}
 	
 	public synchronized void insert(int offset, String delta) {

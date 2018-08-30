@@ -1,7 +1,5 @@
 package com.fwcd.palm.viewmodel.editor.mods.highlighting;
 
-import java.util.HashMap;
-
 import com.fwcd.fructose.Observable;
 import com.fwcd.palm.model.TextRange;
 import com.fwcd.palm.model.editor.PalmDocument;
@@ -24,7 +22,7 @@ public class TextStyler {
 	}
 	
 	public void clear(TextRange range) {
-		document.setCharacterAttributes(range.getOffset(), range.getLength(), new TextStyle(new HashMap<>()), true);
+		document.setCharacterAttributes(range.getOffset(), range.getLength(), null, true);
 	}
 	
 	public void colorize(TextRange range, SyntaxElement element) {
