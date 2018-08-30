@@ -67,7 +67,7 @@ public class AutoCompletionController implements EditorControllerModule {
 	@Override
 	public void onInsert(String delta, int offset, PalmEditorViewModel editor) {
 		if (isToggleCharacter(delta.charAt(delta.length() - 1))) {
-			model.show(editor.getText(), offset);
+			model.show(editor.getWordAt(offset), delta, offset);
 		}
 	}
 }

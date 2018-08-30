@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.fwcd.fructose.Observable;
 import com.fwcd.fructose.structs.ObservableList;
+import com.fwcd.palm.utils.Strings;
 import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionElement;
 import com.fwcd.palm.viewmodel.editor.mods.completion.CompletionProvider;
 
@@ -23,9 +24,23 @@ public class AutoCompletionModel {
 	
 	public Observable<Integer> getSelectedIndex() { return selectedIndex; }
 	
-	public void show(String text, int offset) {
-		active.set(true);
-		completions.set(provider.get().listCompletions(text, offset));
+	public void show(String word, String delta, int offset) {
+		char lastChar = delta.charAt(delta.length() - 1);
+		if (active.get() && Character.isLetter(lastChar)) {
+			// Sort existing completions
+			completions.sort((a, b) -> compareCompletions(word, a, b));
+		} else {
+			// Generate new completions
+			active.set(true);
+			completions.set(provider.get().listCompletions(word, offset));
+		}
+	}
+	
+	private int compareCompletions(String word, CompletionElement a, CompletionElement b) {
+		return Integer.compare(
+			Strings.levenshteinDistance(word, a.getCompletion()),
+			Strings.levenshteinDistance(word, b.getCompletion())
+		);
 	}
 	
 	public void hide() {

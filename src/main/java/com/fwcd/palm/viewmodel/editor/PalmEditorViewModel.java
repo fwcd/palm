@@ -31,6 +31,23 @@ public class PalmEditorViewModel {
 
 	public String getText(int offset, int length) { return getDocument().getText(offset, length); }
 	
+	public String getWordAt(int offset) {
+		PalmDocument document = model.getDocument();
+		int maxIndex = getTextLength() - 1;
+		int left = offset;
+		int right = offset;
+		
+		while ((left >= 0) && Character.isLetterOrDigit(document.charAt(left))) {
+			left--;
+		}
+		left++;
+		while ((right < maxIndex) && Character.isLetterOrDigit(document.charAt(right))) {
+			right++;
+		}
+		
+		return getText(left, right - left);
+	}
+	
 	public synchronized void insert(int offset, String delta) {
 		try {
 			getDocument().insertString(offset, delta, null);

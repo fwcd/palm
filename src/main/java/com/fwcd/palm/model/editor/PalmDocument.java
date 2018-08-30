@@ -27,6 +27,10 @@ public class PalmDocument extends DefaultStyledDocument {
 		return getText(0, getLength());
 	}
 	
+	public char charAt(int offset) {
+		return getText(offset, 1).charAt(0);
+	}
+	
 	public void setText(String text) {
 		try {
 			replace(0, getLength(), text, new TextStyle(new HashMap<>()));
