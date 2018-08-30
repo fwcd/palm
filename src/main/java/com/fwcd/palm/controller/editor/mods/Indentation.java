@@ -1,4 +1,4 @@
-package com.fwcd.palm.view.editor.mods;
+package com.fwcd.palm.controller.editor.mods;
 
 import java.util.HashMap;
 import java.util.Map;

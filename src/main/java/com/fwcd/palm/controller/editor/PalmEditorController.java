@@ -7,14 +7,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 
 import com.fwcd.palm.controller.editor.mods.EditorControllerModule;
+import com.fwcd.palm.controller.editor.mods.Indentation;
 import com.fwcd.palm.controller.editor.mods.completion.AutoCompletionController;
 import com.fwcd.palm.model.editor.PalmDocument;
+import com.fwcd.palm.model.editor.PalmEditorModel;
 import com.fwcd.palm.model.editor.mods.completion.AutoCompletionModel;
 import com.fwcd.palm.view.editor.PalmEditorView;
-import com.fwcd.palm.view.editor.mods.Indentation;
 import com.fwcd.palm.view.editor.mods.completion.AutoCompletionView;
 import com.fwcd.palm.view.utils.DocumentAdapter;
-import com.fwcd.palm.model.editor.PalmEditorModel;
 
 public class PalmEditorController {
 	private final PalmEditorModel viewModel;
