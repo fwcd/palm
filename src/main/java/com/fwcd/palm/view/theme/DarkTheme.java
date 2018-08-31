@@ -17,6 +17,7 @@ public class DarkTheme extends TemplateTheme {
 		set(SyntaxElement.VARIABLE, Color.CYAN);
 		set(SyntaxElement.STRING, Color.ORANGE);
 		set(SyntaxElement.COMMENT, Color.GREEN);
-		set(SyntaxElement.OTHER, Color.BLACK);
+		set(SyntaxElement.FUNCTION, Color.YELLOW);
+		set(SyntaxElement.OTHER, Color.WHITE);
 	}
 }

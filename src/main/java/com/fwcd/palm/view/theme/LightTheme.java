@@ -17,6 +17,7 @@ public class LightTheme extends TemplateTheme {
 		set(SyntaxElement.VARIABLE, Color.CYAN);
 		set(SyntaxElement.STRING, Color.ORANGE);
 		set(SyntaxElement.COMMENT, Color.GREEN);
-		set(SyntaxElement.OTHER, Color.WHITE);
+		set(SyntaxElement.FUNCTION, Color.BLUE);
+		set(SyntaxElement.OTHER, Color.BLACK);
 	}
 }
