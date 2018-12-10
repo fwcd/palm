@@ -5,24 +5,32 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
+import fwcd.palm.view.editor.EditorConfig;
 import fwcd.palm.view.editor.PalmEditorView;
 import fwcd.palm.view.theme.ThemedElement;
 
 public class CurrentLineHighlight implements EditorViewModule {
+	private final EditorConfig config;
+	
+	public CurrentLineHighlight(EditorConfig config) {
+		this.config = config;
+	}
+	
 	@Override
 	public void renderBG(Graphics2D g2d, Dimension canvasSize, PalmEditorView editor) {
-		FontMetrics metrics = editor.getFontMetrics();
-		int padding = 5;
-		int caretLine = editor.getModel().getCaretLine();
+		if (config.doesShowLineHighlight()) {
+			FontMetrics metrics = editor.getFontMetrics();
+			int padding = 5;
+			int caretLine = editor.getModel().getCaretLine();
 
-		int width = (int) canvasSize.getWidth();
-		int height = metrics.getHeight() + padding;
-		int x = 0;
-		int y = caretLine * metrics.getHeight();
+			int width = (int) canvasSize.getWidth();
+			int height = metrics.getHeight() + padding;
+			int x = 0;
+			int y = caretLine * metrics.getHeight();
 
-		g2d.setColor(editor.getTheme().get().colorOf(ThemedElement.LINE_HIGHLIGHT).orElse(getColor(editor.getBGColor())));
-		g2d.fillRect(x, y, width, height);
-
+			g2d.setColor(editor.getTheme().get().colorOf(ThemedElement.LINE_HIGHLIGHT).orElse(getColor(editor.getBGColor())));
+			g2d.fillRect(x, y, width, height);
+		}
 	}
 
 	private Color getColor(Color color) {

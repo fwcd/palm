@@ -15,6 +15,7 @@ import javax.swing.text.JTextComponent;
 import fwcd.fructose.Observable;
 import fwcd.fructose.geometry.Vector2D;
 import fwcd.fructose.swing.View;
+import fwcd.palm.model.editor.PalmEditorModel;
 import fwcd.palm.utils.PalmException;
 import fwcd.palm.view.editor.mods.CurrentLineHighlight;
 import fwcd.palm.view.editor.mods.EditorViewModule;
@@ -23,14 +24,13 @@ import fwcd.palm.view.theme.LightTheme;
 import fwcd.palm.view.theme.Theme;
 import fwcd.palm.view.theme.ThemedElement;
 import fwcd.palm.view.utils.PalmScrollPane;
-import fwcd.palm.model.editor.PalmEditorModel;
 
 public class PalmEditorView implements View, Keybindable {
 	private final JPanel component;
 	private final PalmScrollPane scrollPane;
 	private final TextBufferView textBuffer;
 	private final EditorConfig config = new EditorConfig();
-	
+
 	private final Observable<Theme> theme = new Observable<>(new LightTheme());
 	private final PalmEditorModel viewModel;
 
@@ -56,7 +56,7 @@ public class PalmEditorView implements View, Keybindable {
 
 		List<EditorViewModule> modules = getModules();
 		modules.add(new SyntaxHighlightingView(theme, viewModel.getDocument(), viewModel.getSyntaxHighlighter()));
-		modules.add(new CurrentLineHighlight());
+		modules.add(new CurrentLineHighlight(config));
 		
 		update();
 	}
@@ -76,6 +76,11 @@ public class PalmEditorView implements View, Keybindable {
 	}
 
 	public List<EditorViewModule> getModules() { return textBuffer.getModules(); }
+	
+	public void setShowLineHighlight(boolean showLineHighlight) {
+		config.setShowLineHighlight(showLineHighlight);
+		update();
+	}
 
 	public void setFontSize(int size) {
 		config.setSize(size);

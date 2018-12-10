@@ -5,6 +5,7 @@ import java.awt.Font;
 public class EditorConfig {
 	private static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 16);
 	private Font font = DEFAULT_FONT;
+	private boolean showLineHighlight;
 
 	public void setFont(Font font) {
 		this.font = font;
@@ -16,5 +17,13 @@ public class EditorConfig {
 
 	public Font getFont() {
 		return font;
+	}
+	
+	public void setShowLineHighlight(boolean showLineHighlight) {
+		this.showLineHighlight = showLineHighlight;
+	}
+	
+	public boolean doesShowLineHighlight() {
+		return showLineHighlight;
 	}
 }

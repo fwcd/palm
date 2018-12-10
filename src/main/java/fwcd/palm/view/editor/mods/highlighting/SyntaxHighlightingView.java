@@ -2,11 +2,11 @@ package fwcd.palm.view.editor.mods.highlighting;
 
 import fwcd.fructose.Observable;
 import fwcd.palm.model.editor.PalmDocument;
+import fwcd.palm.model.editor.mods.highlighting.SyntaxHighlighter;
+import fwcd.palm.model.editor.mods.highlighting.TextStyler;
 import fwcd.palm.view.editor.PalmEditorView;
 import fwcd.palm.view.editor.mods.EditorViewModule;
 import fwcd.palm.view.theme.Theme;
-import fwcd.palm.model.editor.mods.highlighting.SyntaxHighlighter;
-import fwcd.palm.model.editor.mods.highlighting.TextStyler;
 
 public class SyntaxHighlightingView implements EditorViewModule {
 	private final Observable<SyntaxHighlighter> highlighting;
