@@ -19,19 +19,23 @@ import fwcd.palm.view.utils.DocumentAdapter;
 public class PalmEditorController {
 	private final PalmEditorModel viewModel;
 	private final List<EditorControllerModule> modules = new ArrayList<>();
+	private final AutoCompletionController completionController;
 	
 	public PalmEditorController(PalmEditorView view, PalmEditorModel viewModel) {
 		this.viewModel = viewModel;
 		
 		AutoCompletionModel completionModel = new AutoCompletionModel(viewModel.getCompletionProvider());
 		AutoCompletionView completionView = new AutoCompletionView(completionModel, view.getTheme());
+		completionController = new AutoCompletionController(completionView, completionModel, viewModel, view);
 		
 		view.getModules().add(completionView);
 		modules.add(new Indentation());
-		modules.add(new AutoCompletionController(completionView, completionModel, viewModel, view));
+		modules.add(completionController);
 		
 		setupListeners();
 	}
+	
+	public AutoCompletionController getCompletionController() { return completionController; }
 	
 	private void setupListeners() {
 		PalmDocument document = viewModel.getDocument();
