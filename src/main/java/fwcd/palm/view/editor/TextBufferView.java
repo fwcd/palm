@@ -69,7 +69,6 @@ public class TextBufferView implements View {
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				super.paintComponent(g2d);
 				renderFG(g2d);
-				component.repaint();
 			}
 
 			@Override
@@ -168,6 +167,7 @@ public class TextBufferView implements View {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				onPress.run();
+				component.repaint();
 			}
 		});
 		keyMappings.put(name, bind);
