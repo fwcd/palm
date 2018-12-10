@@ -61,7 +61,7 @@ public class AutoCompletionController implements EditorControllerModule {
 	}
 	
 	private boolean isToggleCharacter(char c) {
-		return Character.isLetter(c) || (c == '.');
+		return Character.isLetter(c) || (c == '.') || (!hideOnSpace && c == ' ');
 	}
 	
 	@Override
