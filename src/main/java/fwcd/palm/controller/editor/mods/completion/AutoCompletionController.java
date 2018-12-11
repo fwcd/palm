@@ -1,8 +1,10 @@
 package fwcd.palm.controller.editor.mods.completion;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import fwcd.palm.controller.editor.mods.EditorControllerModule;
 import fwcd.palm.model.editor.PalmEditorModel;
@@ -15,7 +17,7 @@ public class AutoCompletionController implements EditorControllerModule {
 	private final AutoCompletionModel model;
 	private final Keybindable keyBinder;
 	private final List<Keybind> keyBinds = new ArrayList<>();
-	private boolean hideOnSpace = true;
+	private final Set<Character> activationChars = new HashSet<>();
 	
 	public AutoCompletionController(
 		AutoCompletionView view,
@@ -26,11 +28,13 @@ public class AutoCompletionController implements EditorControllerModule {
 		this.model = model;
 		this.keyBinder = keyBinder;
 		
+		activationChars.add('.');
+		
 		addKeybind("UP", () -> model.changeSelectedIndex(-1));
 		addKeybind("DOWN", () -> model.changeSelectedIndex(1));
 		addKeybind("ESCAPE", () -> model.hide());
 		addKeybind("SPACE", () -> {
-			if (hideOnSpace) {
+			if (!activationChars.contains(' ')) {
 				model.hide();
 			}
 		});
@@ -61,7 +65,26 @@ public class AutoCompletionController implements EditorControllerModule {
 	}
 	
 	private boolean isToggleCharacter(char c) {
-		return Character.isLetter(c) || (c == '.') || (!hideOnSpace && c == ' ');
+		return Character.isLetter(c) || activationChars.contains(c);
+	}
+	
+	public void addActivationChar(char c) {
+		activationChars.add(c);
+	}
+	
+	public void removeActivationChar(char c) {
+		activationChars.remove(c);
+	}
+	
+	public void setAllActivationChars(char... cs) {
+		activationChars.clear();
+		for (char c : cs) {
+			activationChars.add(c);
+		}
+	}
+	
+	public Set<? extends Character> getActivationChars() {
+		return activationChars;
 	}
 	
 	@Override
@@ -71,11 +94,23 @@ public class AutoCompletionController implements EditorControllerModule {
 		}
 	}
 	
+	/**
+	 * @deprecated Use {@link getActivationChars}
+	 */
+	@Deprecated
 	public boolean doesHideOnSpace() {
-		return hideOnSpace;
+		return activationChars.contains(' ');
 	}
 	
+	/**
+	 * @deprecated Use {@code addActivationChar}, {@code removeActivationChar} or {@code setAllActivationChars}
+	 */
+	@Deprecated
 	public void setHideOnSpace(boolean hideOnSpace) {
-		this.hideOnSpace = hideOnSpace;
+		if (hideOnSpace) {
+			activationChars.remove(' ');
+		} else {
+			activationChars.add(' ');
+		}
 	}
 }
