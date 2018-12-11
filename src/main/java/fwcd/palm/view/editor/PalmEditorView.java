@@ -2,6 +2,7 @@ package fwcd.palm.view.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Rectangle;
 import java.util.List;
@@ -81,7 +82,12 @@ public class PalmEditorView implements View, Keybindable {
 		config.setShowLineHighlight(showLineHighlight);
 		update();
 	}
-
+	
+	public void setFont(Font font) {
+		config.setFont(font);
+		update();
+	}
+	
 	public void setFontSize(int size) {
 		config.setSize(size);
 		update();
