@@ -15,7 +15,7 @@ import javax.swing.text.JTextComponent;
 
 import fwcd.fructose.Observable;
 import fwcd.fructose.geometry.Vector2D;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 import fwcd.palm.model.editor.PalmEditorModel;
 import fwcd.palm.utils.PalmException;
 import fwcd.palm.view.editor.mods.CurrentLineHighlight;
@@ -26,7 +26,7 @@ import fwcd.palm.view.theme.Theme;
 import fwcd.palm.view.theme.ThemedElement;
 import fwcd.palm.view.utils.PalmScrollPane;
 
-public class PalmEditorView implements View, Keybindable {
+public class PalmEditorView implements Viewable, Keybindable {
 	private final JPanel component;
 	private final PalmScrollPane scrollPane;
 	private final TextBufferView textBuffer;

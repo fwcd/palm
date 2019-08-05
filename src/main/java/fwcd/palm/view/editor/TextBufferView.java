@@ -25,7 +25,7 @@ import javax.swing.text.PlainDocument;
 
 import fwcd.fructose.EventListenerList;
 import fwcd.fructose.Observable;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 import fwcd.palm.model.editor.PalmDocument;
 import fwcd.palm.view.editor.mods.EditorViewModule;
 import fwcd.palm.view.theme.Theme;
@@ -33,7 +33,7 @@ import fwcd.palm.view.utils.CustomTabSizeEditorKit;
 import fwcd.palm.view.utils.DocumentAdapter;
 import fwcd.palm.view.utils.TextStyle;
 
-public class TextBufferView implements View {
+public class TextBufferView implements Viewable {
 	private final JPanel component;
 	private final JTextPane foreground;
 	private final Map<String, KeyStroke> keyMappings = new HashMap<>();
